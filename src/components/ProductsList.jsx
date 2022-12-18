@@ -12,7 +12,7 @@ function ProductsList({title}) {
   const chevronWidth = 40;
   const info = useWindowInfo();
   return (
-    <div className="w-9/12 mx-auto my-20 flex flex-col space-y-8">
+    <div className="w-11/12 md:w-9/12 mx-auto my-20 flex flex-col space-y-8">
       <p className="font-semibold text-2xl">{title}</p>
       <ItemsCarousel
         requestToChangeActive={setActiveItemIndex}

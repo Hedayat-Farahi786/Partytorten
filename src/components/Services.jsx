@@ -8,7 +8,7 @@ function Services() {
 
     
   return (
-    <div className="services space-y-5 flex-col md:flex-row rounded-md my-20 w-9/12 mx-auto py-6 px-10 flex items-center justify-between ">
+    <div className="services space-y-5 flex-col md:flex-row rounded-md my-20 w-11/12 md:w-9/12 mx-auto py-6 px-10 flex items-center justify-between ">
       <div className="service flex flex-col md:flex-row items-center space-x-4">
         <BsTruck size={40} />
         <div className="flex flex-col items-center md:items-start">

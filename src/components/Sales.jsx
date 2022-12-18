@@ -3,7 +3,7 @@ import { BsArrowRight } from "react-icons/bs";
 
 function Sales() {
   return (
-    <div className="sales w-9/12 mx-auto my-20 flex space-y-4 xl:space-y-0 xl:space-x-2 flex-wrap items-center justify-between">
+    <div className="sales w-11/12 md:w-9/12 mx-auto my-20 flex space-y-4 xl:space-y-0 xl:space-x-2 flex-wrap items-center justify-center md:justify-between">
       <div style={{ minWidth: "30%" }} className="h-52 relative rounded-md">
         <img
           className="w-full h-full rounded-md object-cover"
