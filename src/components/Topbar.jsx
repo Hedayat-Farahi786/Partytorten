@@ -1,3 +1,4 @@
+import { Badge } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import {
   AiOutlineSearch,
@@ -5,6 +6,7 @@ import {
   AiOutlineHeart,
 } from "react-icons/ai";
 import { HiOutlineShoppingBag, HiMenuAlt2 } from "react-icons/hi";
+import packageJson from "../../package.json";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
@@ -34,7 +36,10 @@ function Topbar() {
         <div className="logo flex items-center space-x-4">
           <HiMenuAlt2 size={26} className="block md:hidden cursor-pointer" />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
-          <p className="text-3xl md:text-5xl font-bold">Farahi</p>
+          <div className="text-3xl md:text-5xl font-bold flex items-start space-x-2">
+            <span>Farahi</span>
+            <Badge color="gray">{packageJson.version}</Badge>
+          </div>
         </div>
         <div className="hidden md:flex search w-5/12 h-12 relative rounded-md overflow-hidden border-black border">
           <input
