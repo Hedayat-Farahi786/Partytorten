@@ -35,7 +35,6 @@ export default function Carousel() {
           <img
             className="-z-10 absolute top-0 right-0 left-0"
             src={banner}
-            alt="banner"
           />
           <div className="z-10 w-10/12 mx-auto h-full flex flex-col space-y-6 items-start justify-center bg">
             <div className="flex flex-col items-start">
@@ -56,19 +55,16 @@ export default function Carousel() {
         <SwiperSlide>
           <img
             src="https://swiperjs.com/demos/images/nature-2.jpg"
-            alt="banner"
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
             src="https://swiperjs.com/demos/images/nature-3.jpg"
-            alt="banner"
           />
         </SwiperSlide>
         <SwiperSlide>
           <img
             src="https://swiperjs.com/demos/images/nature-4.jpg"
-            alt="banner"
           />
         </SwiperSlide>
       </Swiper>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiFillDislike, AiFillLike, AiFillStar } from 'react-icons/ai'
 
-function Comment({name, comment, like, unlike}) {
+function Comment({name, comment, image, like, unlike}) {
   return (
     <div className="flex items-start space-x-4">
                 <img
@@ -21,8 +21,9 @@ function Comment({name, comment, like, unlike}) {
                     by <span className="font-bold">{name}</span>
                   </p>
                  <p className="text-sm text-gray-800 mt-4">{comment}</p>
-                 <div className="h-px w-32 bg-gray-300 mt-3"></div>
-                <div className="flex space-x-6 mt-4">
+                 <img width={400} className='mt-5 rounded' src={image} />
+                 <div className="h-px w-32 bg-gray-200 mt-3"></div>
+                <div className="flex space-x-6 mt-4 text-gray-500">
                   <div className="flex items-center text-sm space-x-2 cursor-pointer transition-all duration-150 ease-linear hover:text-main">
                     <AiFillLike size={20} />
                     <p>Like ({like})</p>

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { AiFillStar, AiOutlineStar, AiOutlineHeart } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 function Product() {
   return (
@@ -13,17 +14,21 @@ function Product() {
         <button className="absolute top-2 right-2 hover:bg-main hover:text-white transition-all duration-200 ease-linear hidden group-hover:block cursor-pointer bg-white rounded-full p-2">
           <AiOutlineHeart />
         </button>
+        <Link to="/products/1">
         <button className="absolute bottom-0 right-0 left-0 bg-main opacity-60 hover:opacity-100 text-white font-bold uppercase w-full py-3 text-sm hidden group-hover:block transition-all duration-200 ease-in-out">
           Quick view
         </button>
+        </Link>
       </div>
       <div className="product__bottom space-y-2">
         <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out text-[10px] xl:text-xs text-gray-600">
           Fashionable women
         </p>
+        <Link to="/products/1">
         <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-xs xl:text-sm">
           Fashionable Women Original T-shirt
         </p>
+        </Link>
         <p className="font-bold text-xs xl:text-sm">$38.00-$50.00</p>
         <div className="flex flex-col xl:flex-row space-y-2 xl:space-y-0 items-center justify-center space-x-0 xl:space-x-4">
           <div className="stars flex">

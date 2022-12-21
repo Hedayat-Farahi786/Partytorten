@@ -4,7 +4,7 @@ import TopNavbar from "./TopNavbar";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { Dropdown } from "flowbite-react";
 import Topbar from "./Topbar";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {

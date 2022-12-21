@@ -6,10 +6,12 @@ import Sales from "./Sales";
 import Services from "./Services";
 import Banner from "./Banner";
 import SmallProductsView from "./SmallProductsView";
+import UserAccount from "./UserAccount";
 
 function Main() {
   return (
-    <>
+    <div className="w-full overflow-hidden">
+      <UserAccount />
       <Carousel />
       <Services />
       <Categories />
@@ -17,9 +19,10 @@ function Main() {
       <Sales />
       <ProductsList title="New Arrivals" />
       <ProductsList title="Our Featured" />
+      <ProductsList />
       <Banner />
       <SmallProductsView />
-    </>
+    </div>
   );
 }
 

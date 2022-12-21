@@ -3,10 +3,19 @@ import React, { useEffect, useState } from "react";
 import {
   AiOutlineSearch,
   AiOutlinePhone,
-  AiOutlineHeart,
+  AiOutlineHeart
 } from "react-icons/ai";
-import { HiOutlineShoppingBag, HiMenuAlt2 } from "react-icons/hi";
+import {
+  HiOutlineShoppingBag,
+  HiMenuAlt2
+} from "react-icons/hi";
 import packageJson from "../../package.json";
+import { useDispatch } from "react-redux";
+import{ toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
+import ShoppingCartSidebar from "./ShoppingCartSidebar";
+import {toggleSidebar} from "../features/sideMenu/sideMenu";
+import Sidebar from "./Sidebar";
+import Filter from "./Filter";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
@@ -19,6 +28,8 @@ function Topbar() {
     };
   }, []);
 
+  const dispatch = useDispatch();
+
   const stickNavbar = () => {
     if (window !== undefined) {
       let windowHeight = window.scrollY;
@@ -30,11 +41,20 @@ function Topbar() {
     }
   };
 
+
+
   return (
     <div className={`topbar__top w-full bg-white ${stickyClass}`}>
-      <div className="w-10/12 mx-auto py-4 flex items-center justify-between">
+      <ShoppingCartSidebar />
+      <Sidebar />
+      <Filter />
+      <div className="w-11/12 md:w-10/12 mx-auto py-4 flex items-center justify-between">
         <div className="logo flex items-center space-x-4">
-          <HiMenuAlt2 size={26} className="block md:hidden cursor-pointer" />
+          <HiMenuAlt2
+            onClick={()=> dispatch(toggleSidebar())}
+            size={26}
+            className="block md:hidden cursor-pointer"
+          />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
           <div className="text-3xl md:text-5xl font-bold flex items-start space-x-2">
             <span>Farahi</span>
@@ -55,7 +75,10 @@ function Topbar() {
           <AiOutlinePhone size={35} className="rotate-90" />
           <AiOutlineHeart size={35} />
 
-          <div className="shoppingCart relative">
+          <div
+            onClick={() => dispatch(toggleShoppingCartSidebar())}
+            className="shoppingCart relative"
+          >
             <HiOutlineShoppingBag size={35} />
             <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
               0
@@ -75,7 +98,10 @@ function Topbar() {
             <AiOutlineHeart size={40} />
           </div>
           <div className="w-px h-12 bg-gray-300"></div>
-          <div className="actions__item flex items-center space-x-2">
+          <div
+            onClick={() => dispatch(toggleShoppingCartSidebar())}
+            className="actions__item flex items-center space-x-2 transition-all duration-150 ease-linear hover:text-main cursor-pointer"
+          >
             <div className="flex flex-col items-start">
               <p className="text-xs">Shopping Cart:</p>
               <p className="text-sm font-bold">$0.00</p>

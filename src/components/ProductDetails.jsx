@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Carousel } from "react-carousel-minimal";
 import "./ProductDetails.css";
-import { Breadcrumb, Table, Tabs } from "flowbite-react";
+import { Breadcrumb, Tabs } from "flowbite-react";
 import { HiHome, HiOutlineShoppingBag } from "react-icons/hi";
-import { AiFillDislike, AiFillLike, AiFillStar } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 import { CgRuler } from "react-icons/cg";
 import sizeGuide from "../assets/images/size_guide.png";
 import { VscDebugBreakpointLog } from "react-icons/vsc";
@@ -13,8 +13,13 @@ import { Player } from "video-react";
 import { BsShieldLock, BsTruck } from "react-icons/bs";
 import Comment from "./Comment";
 import ProductsList from "./ProductsList";
+import { toggleReviewbar } from "../features/sideMenu/sideMenu";
+import { useDispatch } from "react-redux";
+import Reviewbar from "./Reviewbar";
 
 function ProductDetails() {
+  const [showReviewMenu, setShowReviewMenu] = useState(true);
+
   const data = [
     {
       image:
@@ -42,12 +47,15 @@ function ProductDetails() {
     },
   ];
 
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   return (
     <>
-      <div className="mb-20 mt-10 w-9/12 mx-auto flex flex-col space-y-10">
-        <div className="w-12/12 flex space-x-10">
-          <div className="details__left w-5/12">
+      <Reviewbar />
+      <div className="mb-20 mt-10 w-11/12 md:w-9/12 mx-auto flex flex-col space-y-10">
+        <div className="w-12/12 flex flex-col md:flex-row md:space-x-10">
+          <div className="details__left w-10/12 mx-auto md:w-5/12">
             <Carousel
               data={data}
               time={2000}
@@ -60,22 +68,24 @@ function ProductDetails() {
               // dots={true}
               // pauseIconColor="white"
               // pauseIconSize="40px"
-              slideBackgroundColor="darkgrey"
-              slideImageFit="cover"
+              slideBackgroundColor="#f2f3f5"
+              slideImageFit="contain"
               thumbnails={true}
               thumbnailWidth="100px"
             />
           </div>
-          <div className="details__right w-7/12 flex flex-col items-start space-y-6">
-            <Breadcrumb aria-label="Default breadcrumb example">
-              <Breadcrumb.Item icon={HiHome}>
-                <Link>Home</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <Link>Men's Wear</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>Fashionable Men T-shirt</Breadcrumb.Item>
-            </Breadcrumb>
+          <div className="details__right w-10/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
+            <div className="hidden md:flex">
+              <Breadcrumb aria-label="Default breadcrumb example">
+                <Breadcrumb.Item icon={HiHome}>
+                  <Link>Home</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                  <Link>Men's Wear</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>Fashionable Men T-shirt</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
             <p className="text-2xl font-bold">Fashionable Men T-shirt</p>
             <div className="flex space-x-6">
               <div className="text-xs text-gray-600 flex space-x-2">
@@ -146,26 +156,26 @@ function ProductDetails() {
         </div>
         <Tabs.Group style="underline">
           <Tabs.Item active={true} title="Description">
-            <div className="flex space-x-8">
-              <div className="description__left w-6/12 flex flex-col items-start space-y-8">
-                <p className="text-lg font-bold">Features</p>
+            <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-8">
+              <div className="description__left md:w-6/12 flex flex-col items-start space-y-10">
+                <p className="text-xl md:text-lg font-bold">Features</p>
                 <div className="flex flex-col items-start space-y-4">
-                  <p className="text-left text-base">
+                  <p className="text-left text-sm md:text-base">
                     Praesent id enim sit amet.Tdio vulputate eleifend in in
                     tortor. ellus massa. siti iMassa ristique sit amet condim
                     vel, facilisis quimequistiqutiqu amet condim Dilisis
                     Facilisis quis sapien. Praesent id enim sit amet.
                   </p>
                   <div className="flex flex-col space-y-2 items-start">
-                    <div className="flex items-center space-x-4 text-sm">
+                    <div className="flex items-center space-x-4 text-xs md:text-sm">
                       <VscDebugBreakpointLog size={18} />
                       <p>Eleifend in in tortor. ellus massa.Dristique sitii</p>
                     </div>
-                    <div className="flex items-center space-x-4 text-sm">
+                    <div className="flex items-center space-x-4 text-xs md:text-sm">
                       <VscDebugBreakpointLog size={18} />
                       <p>Massa ristique sit amet condim vel</p>
                     </div>
-                    <div className="flex items-center space-x-4 text-sm">
+                    <div className="flex items-center space-x-4 text-xs md:text-sm">
                       <VscDebugBreakpointLog size={18} />
                       <p>
                         Dilisis Facilisis quis sapien. Praesent id enim sit amet
@@ -173,55 +183,75 @@ function ProductDetails() {
                     </div>
                   </div>
                 </div>
-                <p className="text-lg font-bold">Specifications</p>
+                <p className="text-xl md:text-lg font-bold">Specifications</p>
                 <div className="flex flex-col items-start space-y-2 w-full">
                   <div className="flex text-sm w-full items-start justify-start text-left">
-                    <p className="font-bold w-4/12">Material </p>
-                    <p className="w-8/12">
+                    <p className="font-semibold w-5/12 md:w-4/12 text-xs md:text-sm">
+                      Material{" "}
+                    </p>
+                    <p className="w-7/12 md:w-8/12 text-xs md:text-sm">
                       Praesent idasdfasdfasdfasfdasfd enimasdfasdfasf sit
                       amet.Tdio
                     </p>
                   </div>
                   <h className="w-full h-px bg-gray-300"></h>
                   <div className="flex text-sm w-full items-start justify-start text-left">
-                    <p className="font-bold w-4/12">Claimed Size </p>
-                    <p className="w-8/12">Praesent id enim sit amet.Tdio</p>
+                    <p className="font-semibold w-5/12 md:w-4/12 text-xs md:text-sm">
+                      Claimed Size{" "}
+                    </p>
+                    <p className="w-7/12 md:w-8/12 text-xs md:text-sm">
+                      Praesent id enim sit amet.Tdio
+                    </p>
                   </div>
                   <h className="w-full h-px bg-gray-100"></h>
                   <div className="flex text-sm w-full items-start justify-start text-left">
-                    <p className="font-bold w-4/12">Recommended Use </p>
-                    <p className="w-8/12">Praesent id enim sit amet.Tdio</p>
+                    <p className="font-semibold w-5/12 md:w-4/12 text-xs md:text-sm">
+                      Recommended Use{" "}
+                    </p>
+                    <p className="w-7/12 md:w-8/12 text-xs md:text-sm">
+                      Praesent id enim sit amet.Tdio
+                    </p>
                   </div>
                   <h className="w-full h-px bg-gray-100"></h>
                   <div className="flex text-sm w-full items-start justify-start text-left">
-                    <p className="font-bold w-4/12">Manufacturer </p>
-                    <p className="w-8/12">Praesent id enim sit amet.Tdio</p>
+                    <p className="font-semibold w-5/12 md:w-4/12 text-xs md:text-sm">
+                      Manufacturer{" "}
+                    </p>
+                    <p className="w-7/12 md:w-8/12 text-xs md:text-sm">
+                      Praesent id enim sit amet.Tdio
+                    </p>
                   </div>
                 </div>
               </div>
-              <div className="description__right w-6/12 flex flex-col items-start space-y-6">
+              <div className="description__right md:w-6/12 flex flex-col items-start space-y-6">
                 <p className="text-xl font-bold">Video Description</p>
                 <Player poster={data[0].image}>
                   <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
                 </Player>
                 <div className="w-full flex items-center justify-between">
-                  <div className="flex items-center space-x-6">
-                    <div className="flex items-center justify-center rounded-full p-3 border-2">
-                      <BsShieldLock size={26} />
+                  <div className="flex items-center space-x-2 md:space-x-6">
+                    <div className="flex items-center justify-center rounded-full p-2 md:p-3 border-2">
+                      <BsShieldLock size={24} />
                     </div>
-                    <div className="flex flex-col items-start text-sm">
-                      <p className="font-bold">Secure Payments</p>
-                      <p>We ensure secure payements</p>
+                    <div className="flex flex-col items-start text-sm text-left">
+                      <p className="font-bold text-xs md:text-sm">
+                        Secure Payments
+                      </p>
+                      <p className="text-xs md:text-sm">
+                        Payments are well secured
+                      </p>
                     </div>
                   </div>
                   <div className="h-full w-px bg-gray-200"></div>
-                  <div className="flex items-center space-x-6">
-                    <div className="flex items-center justify-center rounded-full p-3 border-2">
+                  <div className="flex items-center space-x-2 md:space-x-6">
+                    <div className="flex items-center justify-center rounded-full p-2 md:p-3 border-2">
                       <BsTruck size={26} />
                     </div>
-                    <div className="flex flex-col items-start text-sm">
-                      <p className="font-bold">Free Shipping</p>
-                      <p>On orders over $99</p>
+                    <div className="flex flex-col items-start text-sm text-left">
+                      <p className="font-bold text-xs md:text-sm">
+                        Free Shipping
+                      </p>
+                      <p className="text-xs md:text-sm">On orders over $99</p>
                     </div>
                   </div>
                 </div>
@@ -231,15 +261,15 @@ function ProductDetails() {
           <Tabs.Item title="Additional Information">
             <div className="flex flex-col space-y-4 items-start w-full">
               <div className="w-full text-left flex">
-                <p className="w-2/12 font-bold">Brands:</p>
+                <p className="w-3/12 md:w-2/12 font-bold">Brands:</p>
                 <p className="w-8/12">SkillStar, SLS</p>
               </div>
               <div className="w-full text-left flex">
-                <p className="w-2/12 font-bold">Colors:</p>
+                <p className="w-3/12 md:w-2/12 font-bold">Colors:</p>
                 <p className="w-8/12">Black, Blue, Brown, Green</p>
               </div>
               <div className="w-full text-left flex">
-                <p className="w-2/12 font-bold">Sizes:</p>
+                <p className="w-3/12 md:w-2/12 font-bold">Sizes:</p>
                 <p className="w-8/12">Extra Large, Large, Medium, Small</p>
               </div>
             </div>
@@ -250,8 +280,8 @@ function ProductDetails() {
             </div>
           </Tabs.Item>
           <Tabs.Item title="(2) Reviews">
-            <div className="review flex space-x-8">
-              <div className="review__left w-4/12 flex flex-col items-start space-y-8">
+            <div className="review flex flex-col md:flex-row space-y-20 md:space-y-0 md:space-x-8">
+              <div className="review__left md:w-4/12 flex flex-col items-start space-y-8">
                 <div className="flex space-x-4">
                   <p className="text-main text-8xl font-extrabold">4.0</p>
                   <div className="flex flex-col space-y-2 items-start">
@@ -325,14 +355,18 @@ function ProductDetails() {
                     <p className="text-gray-800">0%</p>
                   </div>
                 </div>
-                <button className="bg-black uppercase text-white font-semibold px-6 py-2 text-lg rounded">
+                <button
+                  onClick={() => dispatch(toggleReviewbar())}
+                  className="bg-black uppercase text-white font-semibold px-6 py-2 text-lg rounded"
+                >
                   Submit Review
                 </button>
               </div>
-              <div className="review__right w-8/12 border-l pl-6">
+              <div className="review__right md:w-8/12 md:border-l md:pl-6">
                 <Comment
                   name="Aman Farahi"
                   comment="Best Product with good quality"
+                  image="https://img.ebay-kleinanzeigen.de/api/v1/prod-ads/images/f6/f608b292-b5f1-4bcb-ad1d-ac9092e6d0ed?rule=$_59.JPG"
                   like={0}
                   unlike={1}
                 />
