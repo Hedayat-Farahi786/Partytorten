@@ -3,7 +3,7 @@ import {
   AccordionBody,
   AccordionHeader,
 } from "@material-tailwind/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,10 @@ import Product from "./Product";
 
 function AllProducts() {
   const [open, setOpen] = useState(1);
+
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  }, [])
 
   const info = useWindowInfo();
   const [showFilter, setShowFilter] = useState(true);
@@ -415,8 +419,8 @@ function AllProducts() {
               <Product />
               <Product />
             </div>
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 items-center justify-between">
-              <span className="text-sm text-gray-700 dark:text-gray-400">
+            <div className="flex flex-col-reverse md:flex-row space-y-4 md:space-y-0 items-center justify-between">
+              <span className="text-sm mt-4 text-gray-700 dark:text-gray-400">
                 Showing{" "}
                 <span className="font-semibold text-gray-900 dark:text-white">
                   1
@@ -431,7 +435,7 @@ function AllProducts() {
                 </span>{" "}
                 Entries
               </span>
-              <div className="inline-flex mt-2 xs:mt-0">
+              <div className="inline-flex xs:mt-0">
                 <a
                   href="#"
                   className="inline-flex items-center px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"

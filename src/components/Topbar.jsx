@@ -16,6 +16,8 @@ import ShoppingCartSidebar from "./ShoppingCartSidebar";
 import {toggleSidebar} from "../features/sideMenu/sideMenu";
 import Sidebar from "./Sidebar";
 import Filter from "./Filter";
+import UserAccount from "./UserAccount";
+import { Link } from "react-router-dom";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
@@ -48,6 +50,7 @@ function Topbar() {
       <ShoppingCartSidebar />
       <Sidebar />
       <Filter />
+      <UserAccount />
       <div className="w-11/12 md:w-10/12 mx-auto py-4 flex items-center justify-between">
         <div className="logo flex items-center space-x-4">
           <HiMenuAlt2
@@ -57,7 +60,9 @@ function Topbar() {
           />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
           <div className="text-3xl md:text-5xl font-bold flex items-start space-x-2">
-            <span>Farahi</span>
+            <Link to="/">
+            <span className="cursor-pointer">Farahi</span>
+            </Link>
             <Badge color="gray">{packageJson.version}</Badge>
           </div>
         </div>

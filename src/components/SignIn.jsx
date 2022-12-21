@@ -13,7 +13,7 @@ function Login() {
       <div className="flex flex-col items-start">
         <label
           for="email"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-xs md:text-sm font-medium text-gray-900 dark:text-white"
         >
           Email
         </label>
@@ -21,7 +21,7 @@ function Login() {
           type="email"
           name="email"
           id="email"
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Email..."
           required=""
         />
@@ -29,7 +29,7 @@ function Login() {
       <div className="flex flex-col items-start">
         <label
           for="password"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-xs md:text-sm font-medium text-gray-900 dark:text-white"
         >
           Password
         </label>
@@ -38,11 +38,11 @@ function Login() {
           name="password"
           id="password"
           placeholder="Password..."
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 text-xs md:text-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           required=""
         />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between text-xs md:text-sm">
         <div className="flex items-start">
           <div className="flex items-center h-5">
             <input
@@ -61,25 +61,25 @@ function Login() {
         </div>
         <a
           href="#"
-          className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+          className="text-xs md:text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
         >
           Forgot password?
         </a>
       </div>
       <button
         type="submit"
-        className="w-full text-white bg-black font-bold py-3 rounded-md"
+        className="w-full text-white bg-black font-bold p-2 md:py-3 rounded-md"
       >
         Sign in
       </button>
       <button
         type="submit"
-        className="w-full flex items-center justify-center space-x-4 text-gray-900 border bg-white font-bold py-3 rounded-md"
+        className="w-full flex items-center justify-center space-x-4 text-gray-900 border bg-white font-bold py-2 md:py-3 rounded-md"
       >
         <FcGoogle size={24} />
         <span>Log in with Google</span>
       </button>
-      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-xs md:text-sm font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <a
           onClick={() => dispatch(toggleIsLogin())}

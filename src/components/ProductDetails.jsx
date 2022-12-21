@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Carousel } from "react-carousel-minimal";
 import "./ProductDetails.css";
@@ -19,6 +19,10 @@ import Reviewbar from "./Reviewbar";
 
 function ProductDetails() {
   const [showReviewMenu, setShowReviewMenu] = useState(true);
+
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  }, [])
 
   const data = [
     {
@@ -55,7 +59,7 @@ function ProductDetails() {
       <Reviewbar />
       <div className="mb-20 mt-10 w-11/12 md:w-9/12 mx-auto flex flex-col space-y-10">
         <div className="w-12/12 flex flex-col md:flex-row md:space-x-10">
-          <div className="details__left w-10/12 mx-auto md:w-5/12">
+          <div className="details__left w-11/12 mx-auto md:w-5/12">
             <Carousel
               data={data}
               time={2000}
@@ -74,7 +78,7 @@ function ProductDetails() {
               thumbnailWidth="100px"
             />
           </div>
-          <div className="details__right w-10/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
+          <div className="details__right w-11/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
             <div className="hidden md:flex">
               <Breadcrumb aria-label="Default breadcrumb example">
                 <Breadcrumb.Item icon={HiHome}>

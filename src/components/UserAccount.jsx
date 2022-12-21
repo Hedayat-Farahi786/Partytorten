@@ -29,7 +29,7 @@ function UserAccount() {
             >
               <CgCloseO size={24} />
             </div>
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <div className="p-8 space-y-6 md:space-y-6 sm:p-8">
               <div className="font-bold text-xl flex items-center space-x-2 justify-center">
                 <span
                   onClick={() => dispatch(toggleIsLogin())}

@@ -73,7 +73,7 @@ function Filter() {
                     Filter By Price
                   </AccordionHeader>
                   <AccordionBody className="">
-                    <div className="flex flex-col items-start mb-4">
+                    <div className="flex flex-col items-start mb-2">
                       <label
                         for="minmax-range"
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -81,16 +81,19 @@ function Filter() {
                         Price range
                       </label>
                       <input
-                        id="minmax-range"
                         type="range"
-                        min="0"
+                        class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        min="1"
                         max="10"
-                        value="5"
-                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        defaultValue={5}
                       />
+                      <div aria-hidden="true" class="w-full text-xs flex justify-between p-1">
+                        <span>$0</span>
+                        <span>$1000</span>
+                      </div>
                     </div>
                     <div className="flex flex-col items-start space-y-4">
-                      <p className="text-xs">Price: $0 - $340</p>
+                      <p className="text-xs">Price: $0 - $500</p>
                       <button className="text-white bg-black text-xs px-4 py-2 uppercase font-semibold rounded">
                         Filter
                       </button>
@@ -98,7 +101,10 @@ function Filter() {
                   </AccordionBody>
                 </Accordion>
                 <Accordion open={open}>
-                  <AccordionHeader className="text-sm" onClick={() => handleOpen(3)}>
+                  <AccordionHeader
+                    className="text-sm"
+                    onClick={() => handleOpen(3)}
+                  >
                     Size
                   </AccordionHeader>
                   <AccordionBody>
@@ -176,7 +182,10 @@ function Filter() {
                   </AccordionBody>
                 </Accordion>
                 <Accordion open={open}>
-                  <AccordionHeader className="text-sm" onClick={() => handleOpen(3)}>
+                  <AccordionHeader
+                    className="text-sm"
+                    onClick={() => handleOpen(3)}
+                  >
                     Color
                   </AccordionHeader>
                   <AccordionBody>
@@ -254,7 +263,10 @@ function Filter() {
                   </AccordionBody>
                 </Accordion>
                 <Accordion open={open}>
-                  <AccordionHeader className="text-sm" onClick={() => handleOpen(4)}>
+                  <AccordionHeader
+                    className="text-sm"
+                    onClick={() => handleOpen(4)}
+                  >
                     Brand
                   </AccordionHeader>
                   <AccordionBody>

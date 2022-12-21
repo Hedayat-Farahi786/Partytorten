@@ -10,6 +10,10 @@
   src: url("./assets/fonts/segoesc.ttf") format("truetype");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;

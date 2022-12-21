@@ -25,19 +25,24 @@ function Navbar() {
               label="Categories"
               inline={true}
             >
-              <Dropdown.Item>Category 1</Dropdown.Item>
-              <Dropdown.Item>Category 2</Dropdown.Item>
-              <Dropdown.Item>Category 3</Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/allProducts">Men</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/allProducts">Women</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/allProducts">Accessories</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/allProducts">Cosmetics</Link>
+              </Dropdown.Item>
             </Dropdown>
-            <Dropdown
-              className="hover:text-main cursor-pointer"
-              label="Products"
-              inline={true}
-            >
-              <Dropdown.Item>Product 1</Dropdown.Item>
-              <Dropdown.Item>Product 2</Dropdown.Item>
-              <Dropdown.Item>Product 3</Dropdown.Item>
-            </Dropdown>
+            <Link to="/allProducts">
+              <p className="menu__item hover:text-main cursor-pointer">
+                All Products
+              </p>
+            </Link>
             <Link to="/aboutus">
               <p className="menu__item hover:text-main cursor-pointer">
                 About Us
