@@ -3,17 +3,14 @@ import React, { useEffect, useState } from "react";
 import {
   AiOutlineSearch,
   AiOutlinePhone,
-  AiOutlineHeart
+  AiOutlineHeart,
 } from "react-icons/ai";
-import {
-  HiOutlineShoppingBag,
-  HiMenuAlt2
-} from "react-icons/hi";
+import { HiOutlineShoppingBag, HiMenuAlt2 } from "react-icons/hi";
 import packageJson from "../../package.json";
 import { useDispatch } from "react-redux";
-import{ toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
+import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
 import ShoppingCartSidebar from "./ShoppingCartSidebar";
-import {toggleSidebar} from "../features/sideMenu/sideMenu";
+import { toggleSidebar } from "../features/sideMenu/sideMenu";
 import Sidebar from "./Sidebar";
 import Filter from "./Filter";
 import UserAccount from "./UserAccount";
@@ -43,8 +40,6 @@ function Topbar() {
     }
   };
 
-
-
   return (
     <div className={`topbar__top w-full bg-white ${stickyClass}`}>
       <ShoppingCartSidebar />
@@ -54,14 +49,14 @@ function Topbar() {
       <div className="w-11/12 md:w-10/12 mx-auto py-4 flex items-center justify-between">
         <div className="logo flex items-center space-x-4">
           <HiMenuAlt2
-            onClick={()=> dispatch(toggleSidebar())}
+            onClick={() => dispatch(toggleSidebar())}
             size={26}
             className="block md:hidden cursor-pointer"
           />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
           <div className="text-3xl md:text-5xl font-bold flex items-start space-x-2">
             <Link to="/">
-            <span className="cursor-pointer">Farahi</span>
+              <span className="cursor-pointer">Farahi</span>
             </Link>
             <Badge color="gray">{packageJson.version}</Badge>
           </div>
@@ -78,7 +73,9 @@ function Topbar() {
         </div>
         <div className="flex xl:hidden space-x-4">
           <AiOutlinePhone size={35} className="rotate-90" />
-          <AiOutlineHeart size={35} />
+          <Link className="cursor-pointer transition-all duration-150 ease-linear hover:text-main" to="/wishlist">
+            <AiOutlineHeart size={35} />
+          </Link>
 
           <div
             onClick={() => dispatch(toggleShoppingCartSidebar())}
@@ -99,8 +96,10 @@ function Topbar() {
             </div>
           </div>
           <div className="w-px h-12 bg-gray-300"></div>
-          <div className="actions__item">
-            <AiOutlineHeart size={40} />
+          <div className="actions__item cursor-pointer transition-all duration-150 ease-linear hover:text-main">
+            <Link to="/wishlist">
+              <AiOutlineHeart size={40} />
+            </Link>
           </div>
           <div className="w-px h-12 bg-gray-300"></div>
           <div

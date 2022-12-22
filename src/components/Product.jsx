@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Product() {
   return (
-    <div className="product w-32 xl:w-64 group space-y-2 mx-5">
+    <div className="product w-32 xl:w-64 group space-y-2 mx-5 md:mb-10">
       <div className="product__top relative">
         <img
           src="https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1-600x675.jpg"
