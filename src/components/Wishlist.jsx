@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import WishListItem from "./WishListItem";
 function Wishlist() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-20 flex flex-col items-start space-y-10">
       <p className="text-2xl font-bold">My wishlist on Farahi Store</p>
@@ -38,7 +43,7 @@ function Wishlist() {
                   <p>Fashion Meablen T-shirt</p>
                 </div>
               </th>
-              <td class="text-black font-semibold py-4 px-6">$50</td>
+              <td class="text-black font-semibold py-4 px-6">€50</td>
               <td class="text-main py-4 px-6">In Stock</td>
               <td class="py-4 px-6 space-x-4">
                 <button className="border-2 border-main text-main font-semibold px-6 py-2 uppercase cursor-pointer transition-all duration-150 ease-linear hover:bg-main hover:text-white">

@@ -20,9 +20,9 @@ import Reviewbar from "./Reviewbar";
 function ProductDetails() {
   const [showReviewMenu, setShowReviewMenu] = useState(true);
 
-  useEffect(()=> {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
+  }, []);
 
   const data = [
     {
@@ -101,7 +101,7 @@ function ProductDetails() {
                 <span>Fashionable Men's</span>
               </div>
             </div>
-            <p className="text-4xl font-bold text-[#D26E4B]">$38.00 - $50.00</p>
+            <p className="text-4xl font-bold text-[#D26E4B]">€38.00 - €50.00</p>
             <div className="flex items-center space-x-4">
               <div className="stars flex">
                 <AiFillStar color="#666666" />

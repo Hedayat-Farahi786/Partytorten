@@ -16,9 +16,9 @@ import Product from "./Product";
 function AllProducts() {
   const [open, setOpen] = useState(1);
 
-  useEffect(()=> {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [])
+  }, []);
 
   const info = useWindowInfo();
   const [showFilter, setShowFilter] = useState(true);
@@ -115,7 +115,7 @@ function AllProducts() {
                     />
                   </div>
                   <div className="flex flex-col items-start space-y-4">
-                    <p>Price: $0 - $340</p>
+                    <p>Price: $0 - €340</p>
                     <button className="text-white bg-black px-6 py-2 uppercase font-semibold rounded">
                       Filter
                     </button>

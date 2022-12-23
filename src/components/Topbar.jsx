@@ -4,8 +4,9 @@ import {
   AiOutlineSearch,
   AiOutlinePhone,
   AiOutlineHeart,
+  AiOutlineMenu,
 } from "react-icons/ai";
-import { HiOutlineShoppingBag, HiMenuAlt2 } from "react-icons/hi";
+import { HiOutlineShoppingBag } from "react-icons/hi";
 import packageJson from "../../package.json";
 import { useDispatch } from "react-redux";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
@@ -15,6 +16,7 @@ import Sidebar from "./Sidebar";
 import Filter from "./Filter";
 import UserAccount from "./UserAccount";
 import { Link } from "react-router-dom";
+import logo from "../assets/images/logos/logo_black.png";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
@@ -48,15 +50,15 @@ function Topbar() {
       <UserAccount />
       <div className="w-11/12 md:w-10/12 mx-auto py-4 flex items-center justify-between">
         <div className="logo flex items-center space-x-4">
-          <HiMenuAlt2
+          <AiOutlineMenu
             onClick={() => dispatch(toggleSidebar())}
             size={26}
             className="block md:hidden cursor-pointer"
           />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
-          <div className="text-3xl md:text-5xl font-bold flex items-start space-x-2">
+          <div className="flex items-start space-x-3">
             <Link to="/">
-              <span className="cursor-pointer">Farahi</span>
+              <img className="my-1 md:my-3 w-32 md:w-48" src={logo} alt="" />
             </Link>
             <Badge color="gray">{packageJson.version}</Badge>
           </div>
@@ -73,7 +75,10 @@ function Topbar() {
         </div>
         <div className="flex xl:hidden space-x-4">
           <AiOutlinePhone size={35} className="rotate-90" />
-          <Link className="cursor-pointer transition-all duration-150 ease-linear hover:text-main" to="/wishlist">
+          <Link
+            className="cursor-pointer transition-all duration-150 ease-linear hover:text-main"
+            to="/wishlist"
+          >
             <AiOutlineHeart size={35} />
           </Link>
 
@@ -108,7 +113,7 @@ function Topbar() {
           >
             <div className="flex flex-col items-start">
               <p className="text-xs">Shopping Cart:</p>
-              <p className="text-sm font-bold">$0.00</p>
+              <p className="text-sm font-bold">€0.00</p>
             </div>
             <div className="shoppingCart relative">
               <HiOutlineShoppingBag size={40} />

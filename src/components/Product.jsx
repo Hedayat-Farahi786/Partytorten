@@ -15,9 +15,9 @@ function Product() {
           <AiOutlineHeart />
         </button>
         <Link to="/products/1">
-        <button className="absolute bottom-0 right-0 left-0 bg-main opacity-60 hover:opacity-100 text-white font-bold uppercase w-full py-3 text-sm hidden group-hover:block transition-all duration-200 ease-in-out">
-          Quick view
-        </button>
+          <button className="absolute bottom-0 right-0 left-0 bg-main opacity-60 hover:opacity-100 text-white font-bold uppercase w-full py-3 text-sm hidden group-hover:block transition-all duration-200 ease-in-out">
+            Quick view
+          </button>
         </Link>
       </div>
       <div className="product__bottom space-y-2">
@@ -25,11 +25,11 @@ function Product() {
           Fashionable women
         </p>
         <Link to="/products/1">
-        <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-xs xl:text-sm">
-          Fashionable Women Original T-shirt
-        </p>
+          <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-xs xl:text-sm">
+            Fashionable Women Original T-shirt
+          </p>
         </Link>
-        <p className="font-bold text-xs xl:text-sm">$38.00-$50.00</p>
+        <p className="font-bold text-xs xl:text-sm">€38.00-€50.00</p>
         <div className="flex flex-col xl:flex-row space-y-2 xl:space-y-0 items-center justify-center space-x-0 xl:space-x-4">
           <div className="stars flex">
             <AiFillStar style={{ color: "#D26E4B" }} />

@@ -12,7 +12,9 @@ function Sales() {
         />
         <div className="absolute top-2/4 transform -translate-y-2/4 left-8 flex flex-col items-start text-white">
           <p className="font-bold text-xl md:text-3xl">For Men</p>
-          <p className="uppercase text-sm md:text-base font-normal">Starting at $29</p>
+          <p className="uppercase text-sm md:text-base font-normal">
+            Starting at $29
+          </p>
           <div className="w-10 h-1 bg-white my-2"></div>
           <p className="cursor-pointer flex items-center space-x-2 text-sm md:text-base">
             <span>Shop Now</span> <BsArrowRight size={20} />
@@ -47,7 +49,9 @@ function Sales() {
         />
         <div className="absolute top-2/4 transform -translate-y-2/4 right-4 md:right-8 flex flex-col items-start text-white">
           <p className="font-bold text-xl md:text-3xl">For Women</p>
-          <p className="uppercase text-sm base:text-base font-normal ">30% off</p>
+          <p className="uppercase text-sm base:text-base font-normal ">
+            30% off
+          </p>
           <div className="w-10 h-1 bg-white my-2"></div>
           <p className="cursor-pointer flex items-center space-x-2 text-sm md:text-base">
             <span>Shop Now</span> <BsArrowRight size={20} />

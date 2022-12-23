@@ -87,13 +87,16 @@ function Filter() {
                         max="10"
                         defaultValue={5}
                       />
-                      <div aria-hidden="true" class="w-full text-xs flex justify-between p-1">
-                        <span>$0</span>
-                        <span>$1000</span>
+                      <div
+                        aria-hidden="true"
+                        class="w-full text-xs flex justify-between p-1"
+                      >
+                        <span>€0</span>
+                        <span>€1000</span>
                       </div>
                     </div>
                     <div className="flex flex-col items-start space-y-4">
-                      <p className="text-xs">Price: $0 - $500</p>
+                      <p className="text-xs">Price: $0 - €500</p>
                       <button className="text-white bg-black text-xs px-4 py-2 uppercase font-semibold rounded">
                         Filter
                       </button>

@@ -2,6 +2,7 @@ import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
 
 function ShoppingCartSidebar() {
@@ -46,7 +47,7 @@ function ShoppingCartSidebar() {
                   </p>
                   <div className="flex items-center space-x-4 text-sm">
                     <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">$50.00</p>
+                    <p className="font-semibold text-gray">€50.00</p>
                   </div>
                 </div>
                 <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
@@ -66,7 +67,7 @@ function ShoppingCartSidebar() {
                   </p>
                   <div className="flex items-center space-x-4 text-sm">
                     <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">$50.00</p>
+                    <p className="font-semibold text-gray">€50.00</p>
                   </div>
                 </div>
                 <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
@@ -86,7 +87,7 @@ function ShoppingCartSidebar() {
                   </p>
                   <div className="flex items-center space-x-4 text-sm">
                     <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">$50.00</p>
+                    <p className="font-semibold text-gray">€50.00</p>
                   </div>
                 </div>
                 <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
@@ -98,14 +99,17 @@ function ShoppingCartSidebar() {
                 <div className="h-px w-full bg-gray-300"></div>
                 <div className="flex items-center justify-between px-2">
                   <p className="text-sm md:text-base">Subtotal:</p>
-                  <p className="md:text-lg text-base font-bold">$150</p>
+                  <p className="md:text-lg text-base font-bold">€150</p>
                 </div>
                 <div className="h-px w-full bg-gray-300"></div>
               </div>
               <div>
                 <div className="flex items-center justify-center cursor-pointer hover:text-main">
-                  <p className="text-sm font-bold border-b-2 border-main">
-                    View Cart
+                  <p
+                    onClick={() => dispatch(toggleShoppingCartSidebar())}
+                    className="text-sm font-bold border-b-2 border-main"
+                  >
+                    <Link to="/shoppingCart">View Cart</Link>
                   </p>
                 </div>
                 <div className="flex items-center justify-center">

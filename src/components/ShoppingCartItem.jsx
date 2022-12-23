@@ -1,8 +1,7 @@
 import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
 
-function WishListItem() {
+function ShoppingCartItem() {
   return (
     <div className="w-full border p-10 space-y-4 flex flex-col items-center justify-center">
       <div className="relative">
@@ -20,22 +19,19 @@ function WishListItem() {
         <span>Price:</span>
         <span className="font-semibold">€50</span>
       </div>
-      <div className="text-sm  text-gray-600 flex items-center justify-center space-x-4">
-        <span>Stock:</span>
-        <span className="text-main">In Stock</span>
+      <div>
+        <div className="flex items-center border rounded-md">
+          <button className="px-4 py-2 border-r">-</button>
+          <span className="px-6 font-bold">1</span>
+          <button className="px-4 py-2 border-l">+</button>
+        </div>
       </div>
-      <div className="flex items-center justify-center space-x-4">
-        <Link to="/products/1">
-          <button className="border-2 border-main text-main font-semibold px-4 py-2 uppercase cursor-pointer transition-all duration-150 ease-linear hover:bg-main hover:text-white">
-            Quick View
-          </button>
-        </Link>
-        <button className="border-2 border-main text-white bg-main font-semibold uppercase px-4 py-2 cursor-pointer">
-          Add to Cart
-        </button>
+      <div className="text-sm  text-gray-600 flex items-center justify-center space-x-4">
+        <span>Subtotal:</span>
+        <span className="font-bold">€50</span>
       </div>
     </div>
   );
 }
 
-export default WishListItem;
+export default ShoppingCartItem;
