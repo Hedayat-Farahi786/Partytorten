@@ -16,50 +16,38 @@ import ProductsList from "./ProductsList";
 import { toggleReviewbar } from "../features/sideMenu/sideMenu";
 import { useDispatch } from "react-redux";
 import Reviewbar from "./Reviewbar";
+import axios from 'axios';
+import Divider from "./Divider";
+import { addToShoppingCart } from "../features/shoppingCart/shoppingCart";
 
 function ProductDetails() {
+  window.scrollTo(0, 0);
+  const { id } = useParams();
   const [showReviewMenu, setShowReviewMenu] = useState(true);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    axios.get(`https://partytorten-backend.vercel.app/products/${id}`).then(res => {
+      setProduct(res.data);
+    }).catch(err => {
+      console.log('Error getting the product');
+    })
+
+
   }, []);
 
-  const data = [
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1.jpg",
-    },
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1.jpg",
-    },
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-3.jpg",
-    },
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-4.jpg",
-    },
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-4.jpg",
-    },
-    {
-      image:
-        "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-4.jpg",
-    },
-  ];
+  const data = Array.from({ length: 8 }, () => ({ image: product.image }));
 
   const dispatch = useDispatch();
 
-  const { id } = useParams();
   return (
     <>
       <Reviewbar />
       <div className="mb-20 mt-10 w-11/12 md:w-9/12 mx-auto flex flex-col space-y-10">
         <div className="w-12/12 flex flex-col md:flex-row md:space-x-10">
-          <div className="details__left w-11/12 mx-auto md:w-5/12">
+          <div className="details__left w-11/12 mx-auto md:w-6/12">
             <Carousel
               data={data}
               time={2000}
@@ -85,23 +73,19 @@ function ProductDetails() {
                   <Link>Home</Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                  <Link>Men's Wear</Link>
+                  <Link>{product.category}</Link>
                 </Breadcrumb.Item>
-                <Breadcrumb.Item>Fashionable Men T-shirt</Breadcrumb.Item>
+                <Breadcrumb.Item>{product.name}</Breadcrumb.Item>
               </Breadcrumb>
             </div>
-            <p className="text-2xl font-bold">Fashionable Men T-shirt</p>
+            <p className="text-2xl font-bold">{product.name}</p>
             <div className="flex space-x-6">
               <div className="text-xs text-gray-600 flex space-x-2">
-                <span className="font-semibold">SKU:</span>
-                <span>987612345</span>
-              </div>
-              <div className="text-xs text-gray-600 flex space-x-2">
                 <span className="font-semibold">CATERGORY:</span>
-                <span>Fashionable Men's</span>
+                <span>{product.category}</span>
               </div>
             </div>
-            <p className="text-4xl font-bold text-[#D26E4B]">€38.00 - €50.00</p>
+            <p className="text-4xl font-bold text-[#D26E4B]">€{product.price}</p>
             <div className="flex items-center space-x-4">
               <div className="stars flex">
                 <AiFillStar color="#666666" />
@@ -113,9 +97,7 @@ function ProductDetails() {
               <span className="text-xs text-gray-500">(2 Reviews)</span>
             </div>
             <p className="text-left text-gray-700 text-sm">
-              Sed egestas, ante et vulputate volutpat, eros pede semper est,
-              vitae luctus metus libero eu augue. Morbi purus liberpuro ate vol
-              faucibus adipiscing.
+              {product.description}
             </p>
             <div className="flex space-x-4 items-center">
               <p className="text-base">Color:</p>
@@ -138,10 +120,10 @@ function ProductDetails() {
                   L
                 </div>
               </div>
-              <div className="flex items-center text-sm text-gray-500 underline space-x-2 cursor-pointer">
+              {/* <div className="flex items-center text-sm text-gray-500 underline space-x-2 cursor-pointer">
                 <CgRuler size={20} />
                 <span>Size Guide</span>
-              </div>
+              </div> */}
             </div>
             <div className="h-px w-full bg-gray-100"></div>
             <div className="flex space-x-10">
@@ -150,7 +132,7 @@ function ProductDetails() {
                 <span className="px-6 font-bold">1</span>
                 <button className="px-4 border-l">+</button>
               </div>
-              <button className="flex items-center space-x-2 bg-main px-6 py-2 text-white rounded-md text-base cursor-pointer font-semibold">
+              <button onClick={()=> dispatch(addToShoppingCart(product))} className="flex items-center space-x-2 bg-main px-6 py-2 text-white rounded-md text-base cursor-pointer font-semibold">
                 <HiOutlineShoppingBag />
                 <span>Add to cart</span>
               </button>
@@ -158,7 +140,7 @@ function ProductDetails() {
             <div className="h-px w-full bg-gray-100"></div>
           </div>
         </div>
-        <Tabs.Group style="underline">
+        {/* <Tabs.Group style="underline">
           <Tabs.Item active={true} title="Description">
             <div className="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-8">
               <div className="description__left md:w-6/12 flex flex-col items-start space-y-10">
@@ -384,7 +366,109 @@ function ProductDetails() {
               </div>
             </div>
           </Tabs.Item>
-        </Tabs.Group>
+        </Tabs.Group> */}
+
+<Divider />
+<h1 className="my-5 text-left font-semibold text-2xl">Reviews</h1>
+            <div className="review flex flex-col md:flex-row space-y-20 md:space-y-0 md:space-x-8">
+              <div className="review__left md:w-4/12 flex flex-col items-start space-y-8">
+                <div className="flex space-x-4">
+                  <p className="text-main text-8xl font-extrabold">4.0</p>
+                  <div className="flex flex-col space-y-2 items-start">
+                    <p className="font-semibold">Average Rating</p>
+                    <div className="flex items-center space-x-4">
+                      <div className="stars flex">
+                        <AiFillStar color="#D26E4B" />
+                        <AiFillStar color="#D26E4B" />
+                        <AiFillStar color="#D26E4B" />
+                        <AiFillStar color="#D26E4B" />
+                        <AiFillStar color="#D6D6D6" />
+                      </div>
+                      <span className="text-xs text-gray-500">(2 Reviews)</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col space-y-2 w-full">
+                  <div className="flex items-center space-x-4 text-sm">
+                    <div className="stars flex">
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                    </div>
+                    <div className="w-56 h-2 rounded-full bg-[#EEEEEE]"></div>
+                    <p className="text-gray-800">0%</p>
+                  </div>
+                  <div className="flex items-center space-x-4 text-sm">
+                    <div className="stars flex">
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D6D6D6" />
+                    </div>
+                    <div className="w-56 h-2 rounded-full bg-[#999999]"></div>
+                    <p className="text-gray-800">100%</p>
+                  </div>
+                  <div className="flex items-center space-x-4 text-sm">
+                    <div className="stars flex">
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                    </div>
+                    <div className="w-56 h-2 rounded-full bg-[#EEEEEE]"></div>
+                    <p className="text-gray-800">0%</p>
+                  </div>
+                  <div className="flex items-center space-x-4 text-sm">
+                    <div className="stars flex">
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                    </div>
+                    <div className="w-56 h-2 rounded-full bg-[#EEEEEE]"></div>
+                    <p className="text-gray-800">0%</p>
+                  </div>
+                  <div className="flex items-center space-x-4 text-sm">
+                    <div className="stars flex">
+                      <AiFillStar color="#D26E4B" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                      <AiFillStar color="#D6D6D6" />
+                    </div>
+                    <div className="w-56 h-2 rounded-full bg-[#EEEEEE]"></div>
+                    <p className="text-gray-800">0%</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => dispatch(toggleReviewbar())}
+                  className="bg-black uppercase text-white font-semibold px-6 py-2 text-lg rounded"
+                >
+                  Submit Review
+                </button>
+              </div>
+              <div className="review__right md:w-8/12 md:border-l md:pl-6">
+                <Comment
+                  name="Aman Farahi"
+                  comment="Best cake with good quality"
+                  image="https://img.ebay-kleinanzeigen.de/api/v1/prod-ads/images/f6/f608b292-b5f1-4bcb-ad1d-ac9092e6d0ed?rule=$_59.JPG"
+                  like={0}
+                  unlike={1}
+                />
+                <div className="w-full h-px bg-gray-200 my-6"></div>
+                <Comment
+                  name="Hedayat Farahi"
+                  comment="Great taste"
+                  like={1}
+                  unlike={0}
+                />
+              </div>
+            </div>
       </div>
       <ProductsList title="Related Products" />
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ItemsCarousel from "react-items-carousel";
 import {
   AiOutlineRight,
@@ -6,8 +6,23 @@ import {
 } from "react-icons/ai";
 import Product from "./Product";
 import {useWindowInfo} from 'react-window-info-hook'
-
+import axios from 'axios'
 function ProductsList({title}) {
+
+  
+  const [products, setProducts] = useState([]);
+
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    axios.get('https://partytorten-backend.vercel.app/products').then(response => {
+      setProducts(response.data);
+    }).catch(error => {
+      console.error('Error fetching products:', error);
+    });
+  }, []);
+
+
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const chevronWidth = 40;
   const info = useWindowInfo();
@@ -31,13 +46,11 @@ function ProductsList({title}) {
         }
         chevronWidth={chevronWidth}
       >
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
+       {
+        products.map(product => (
+          <Product name={product.name} description={product.description} image={product.image} category={product.category} price={product.price} id={product._id} key={product._id} />
+        ))
+       }
       </ItemsCarousel>
     </div>
   );

@@ -8,7 +8,7 @@ import {
 } from "react-icons/ai";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import packageJson from "../../package.json";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
 import ShoppingCartSidebar from "./ShoppingCartSidebar";
 import { toggleSidebar } from "../features/sideMenu/sideMenu";
@@ -20,6 +20,15 @@ import logo from "../assets/images/logos/logo_black.png";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
+
+
+  const cart = useSelector(state => state.shoppingCart.cart);
+
+  let total = 0;
+cart.forEach(item => {
+  total += item.product.price * item.quantity;
+});
+
 
   useEffect(() => {
     window.addEventListener("scroll", stickNavbar);
@@ -87,7 +96,7 @@ function Topbar() {
             className="shoppingCart relative"
           >
             <HiOutlineShoppingBag size={35} />
-            <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
+            <div className="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
               0
             </div>
           </div>
@@ -113,12 +122,12 @@ function Topbar() {
           >
             <div className="flex flex-col items-start">
               <p className="text-xs">Shopping Cart:</p>
-              <p className="text-sm font-bold">€0.00</p>
+              <p className="text-sm font-bold">€{total.toFixed(2)}</p>
             </div>
             <div className="shoppingCart relative">
               <HiOutlineShoppingBag size={40} />
-              <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
-                0
+              <div className="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
+                {cart.length}
               </div>
             </div>
           </div>

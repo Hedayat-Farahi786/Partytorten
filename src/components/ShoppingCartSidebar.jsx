@@ -4,11 +4,20 @@ import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
+import { removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
 
 function ShoppingCartSidebar() {
   const showShoppingCartSidebar = useSelector(
     (state) => state.shoppingCartSidebar.showShoppingCartSidebar
   );
+
+  const cart = useSelector(state => state.shoppingCart.cart);
+
+  let total = 0;
+  cart.forEach(item => {
+    total += item.product.price * item.quantity;
+  });
+  
 
   const dispatch = useDispatch();
 
@@ -34,72 +43,38 @@ function ShoppingCartSidebar() {
               <div className="h-px w-full bg-gray-300"></div>
             </div>
             <div className="shoppingCart__items w-full flex flex-col md:space-y-4 space-y-6">
-              {/* <p className="text-center text-base font-semibold text-gray-600">No products in the cart.</p> */}
-              {/* SHOPPING CART PRODUCT START */}
-              <div className="flex items-start space-x-4">
-                <img
-                  width={80}
-                  src="https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1-600x675.jpg"
-                />
-                <div className="flex flex-col items-start space-y-3">
-                  <p className="text-left font-semibold text-gray-700 text-sm md:text-base">
-                    Fashionable Women T-shirt Original Trucker - Good Fabric
-                  </p>
-                  <div className="flex items-center space-x-4 text-sm">
-                    <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">€50.00</p>
+              
+              {
+                cart.length === 0 ? (<p className="text-center text-base font-semibold text-gray-600">No products in the cart.</p>) : (
+                cart.map(item => (
+                    <div key={item.product._id} className="flex items-center justify-between">
+                    <div className="flex items-start space-x-4">
+                    <img
+                      width={80}
+                      src={item.product.image}
+                    />
+                    <div className="flex flex-col items-start space-y-3">
+                      <p className="text-left font-semibold text-gray-700 text-sm md:text-base">
+                        {item.product.name}
+                      </p>
+                      <div className="flex items-center space-x-4 text-sm">
+                        <p className="text-gray-500">{item.quantity} x</p>
+                        <p className="font-semibold text-gray">€{item.product.price}</p>
+                      </div>
+                    </div>
+                    </div>
+                    <div onClick={() => dispatch(removeFromShoppingCart(item.product))} className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
+                      <FaTimes />
+                    </div>
                   </div>
-                </div>
-                <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
-                  <FaTimes />
-                </div>
-              </div>
-              {/* SHOPPING CART PRODUCT END */}
-              {/* SHOPPING CART PRODUCT START */}
-              <div className="flex items-start space-x-4">
-                <img
-                  width={80}
-                  src="https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1-600x675.jpg"
-                />
-                <div className="flex flex-col items-start space-y-3">
-                  <p className="text-left font-semibold text-gray-700 text-sm md:text-base">
-                    Fashionable Women T-shirt Original Trucker - Good Fabric
-                  </p>
-                  <div className="flex items-center space-x-4 text-sm">
-                    <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">€50.00</p>
-                  </div>
-                </div>
-                <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
-                  <FaTimes />
-                </div>
-              </div>
-              {/* SHOPPING CART PRODUCT END */}
-              {/* SHOPPING CART PRODUCT START */}
-              <div className="flex items-start space-x-4">
-                <img
-                  width={80}
-                  src="https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1-600x675.jpg"
-                />
-                <div className="flex flex-col items-start space-y-3">
-                  <p className="text-left font-semibold text-gray-700 text-sm md:text-base">
-                    Fashionable Women T-shirt Original Trucker - Good Fabric
-                  </p>
-                  <div className="flex items-center space-x-4 text-sm">
-                    <p className="text-gray-500">1 x</p>
-                    <p className="font-semibold text-gray">€50.00</p>
-                  </div>
-                </div>
-                <div className="rounded-full border p-2 hover:text-main hover:border-main transition-all duration-150 ease-linear cursor-pointer">
-                  <FaTimes />
-                </div>
-              </div>
-              {/* SHOPPING CART PRODUCT END */}
+                )))
+              }
+             
               <div className="w-full flex flex-col space-y-3">
                 <div className="h-px w-full bg-gray-300"></div>
                 <div className="flex items-center justify-between px-2">
                   <p className="text-sm md:text-base">Subtotal:</p>
-                  <p className="md:text-lg text-base font-bold">€150</p>
+                  <p className="md:text-lg text-base font-bold">€{total.toFixed(2)}</p>
                 </div>
                 <div className="h-px w-full bg-gray-300"></div>
               </div>

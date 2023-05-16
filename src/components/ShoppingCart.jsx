@@ -5,10 +5,20 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Divider from "./Divider";
 import ShoppingCartItem from "./ShoppingCartItem";
+import { useDispatch, useSelector } from "react-redux";
+import { incrementQuantity, removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
 
 function ShoppingCart() {
-  const [subtotal, setSubtotal] = useState(50);
-  const [total, setTotal] = useState(subtotal);
+
+  const cart = useSelector(state => state.shoppingCart.cart);
+
+  let total = 0;
+  cart.forEach(item => {
+    total += item.product.price * item.quantity;
+  });
+
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,55 +39,60 @@ function ShoppingCart() {
       </div>
       <div className="shoppingCart w-11/12 md:w-10/12 space-y-20 md:space-y-0 md:space-x-6 flex flex-col md:flex-row mx-auto">
         <div className="shoppingCart__left w-full md:w-8/12 flex flex-col items-start space-y-10">
-          <div class="hidden md:flex overflow-x-auto relative w-full">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <div className="hidden md:flex overflow-x-auto relative w-full">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" className="py-3 px-6">
                     PRODUCT
                   </th>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" className="py-3 px-6">
                     PRICE
                   </th>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" className="py-3 px-6">
                     QUANTITY
                   </th>
-                  <th scope="col" class="py-3 px-6">
+                  <th scope="col" className="py-3 px-6">
                     SUBTOTAL
                   </th>
-                  <th scope="col" class="py-3 px-6"></th>
+                  <th scope="col" className="py-3 px-6"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                {
+                  cart.length === 0 ? (<p className="text-center text-2xl font-semibold text-gray-600 w-full mt-10">No products in the cart.</p>) : (
+                  cart.map(item => (
+                    <tr key={item.product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th
                     scope="row"
-                    class="py-4 px-6 font-medium text-gray-900 dark:text-white"
+                    className="py-4 px-6 font-medium text-gray-900 dark:text-white"
                   >
                     <div className="flex items-center space-x-4">
                       <img
                         width={80}
-                        src="https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/09/product-3-1-600x675.jpg"
+                        src={item.product.image}
                         alt=""
                       />
-                      <p>Fashion Meablen T-shirt</p>
+                      <p>{item.product.name}</p>
                     </div>
                   </th>
-                  <td class="text-black font-semibold py-4 px-6">€50</td>
-                  <td class="py-4 px-6">
+                  <td className="text-black font-semibold py-4 px-6">€{item.product.price}</td>
+                  <td className="py-4 px-6">
                     <div className="flex items-center justify-between border rounded-md">
-                      <button className="px-3 py-2 border-r">-</button>
-                      <span className="px-6 py-2 font-bold">1</span>
-                      <button className="px-3 py-2 border-l">+</button>
+                      <button className="px-3 py-2 border-r cursor-pointer" onClick={()=> dispatch(removeFromShoppingCart(item.product))}>-</button>
+                      <span className="px-6 py-2 font-bold">{item.quantity}</span>
+                      <button className="px-3 py-2 border-l cursor-pointer" onClick={()=> dispatch(incrementQuantity(item.product))}>+</button>
                     </div>
                   </td>
-                  <td class="py-4 px-6 text-black font-bold ">€50</td>
-                  <td class="py-4 px-6 ">
-                    <div className="flex items-center justify-center border rounded-full w-8 h-8 cursor-pointer transition-all duration-150 ease-linear hover:text-main">
+                  <td className="py-4 px-6 text-black font-bold ">€{(item.product.price * item.quantity).toFixed(2)}</td>
+                  <td className="py-4 px-6 ">
+                    <div onClick={()=> dispatch(removeFromShoppingCart(item.product))} className="flex items-center justify-center border rounded-full w-8 h-8 cursor-pointer transition-all duration-150 ease-linear hover:text-main">
                       <IoCloseSharp size={20} />
                     </div>
                   </td>
                 </tr>
+                  )))
+                }
               </tbody>
             </table>
           </div>
@@ -96,7 +111,7 @@ function ShoppingCart() {
           <Divider />
           <div className="text-base font-semibold flex items-center justify-between w-full">
             <span>Subtotal</span>
-            <span className="font-bold">€{subtotal}</span>
+            <span className="font-bold">€{total.toFixed(2)}</span>
           </div>
           <Divider />
           <div className="w-full flex flex-col items-start space-y-6 py-5">
@@ -114,7 +129,7 @@ function ShoppingCart() {
           <div className="w-full flex flex-col items-start text-sm space-y-4">
             <div className="flex items-start space-x-2">
               <span>Subtotal:</span>
-              <span className="font-medium">€{subtotal}</span>
+              <span className="font-medium">€{total.toFixed(2)}</span>
             </div>
             <div className="flex items-start space-x-2">
               <span>Discount:</span>

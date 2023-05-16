@@ -82,14 +82,14 @@ function Filter() {
                       </label>
                       <input
                         type="range"
-                        class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                         min="1"
                         max="10"
                         defaultValue={5}
                       />
                       <div
                         aria-hidden="true"
-                        class="w-full text-xs flex justify-between p-1"
+                        className="w-full text-xs flex justify-between p-1"
                       >
                         <span>€0</span>
                         <span>€1000</span>
@@ -112,7 +112,7 @@ function Filter() {
                   </AccordionHeader>
                   <AccordionBody>
                     <div className="flex items-center justify-between mb-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -130,7 +130,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -148,7 +148,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -166,7 +166,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -193,7 +193,7 @@ function Filter() {
                   </AccordionHeader>
                   <AccordionBody>
                     <div className="flex items-center justify-between mb-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -211,7 +211,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -229,7 +229,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -247,7 +247,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -274,7 +274,7 @@ function Filter() {
                   </AccordionHeader>
                   <AccordionBody>
                     <div className="flex items-center justify-between mb-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -292,7 +292,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -310,7 +310,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"
@@ -328,7 +328,7 @@ function Filter() {
                     </div>
                     <Divider />
                     <div className="flex items-center justify-between my-4 px-2">
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <input
                           id="default-checkbox"
                           type="checkbox"

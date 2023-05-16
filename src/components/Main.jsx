@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductsList from "./ProductsList";
 import Carousel from "./Carousel";
 import Categories from "./Categories";
@@ -6,12 +6,11 @@ import Sales from "./Sales";
 import Services from "./Services";
 import Banner from "./Banner";
 import SmallProductsView from "./SmallProductsView";
+import axios from "axios";
 
 function Main() {
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
+
 
   return (
     <div className="w-full overflow-hidden">
@@ -19,7 +18,7 @@ function Main() {
       <Services />
       <Categories />
       <ProductsList title="Best Sellers" />
-      <Sales />
+      {/* <Sales /> */}
       <ProductsList title="New Arrivals" />
       <ProductsList title="Our Featured" />
       <ProductsList />
