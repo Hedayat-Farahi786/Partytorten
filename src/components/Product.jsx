@@ -24,7 +24,7 @@ function Product({name, description, image, category, price, id}) {
         <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out text-[10px] xl:text-xs text-gray-600">
          {category}
         </p>
-        <Link to="/products/1">
+        <Link to={`/products/${id}`}>
           <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-xs xl:text-sm">
             {name}
           </p>
@@ -38,9 +38,12 @@ function Product({name, description, image, category, price, id}) {
             <AiFillStar style={{ color: "#D26E4B" }} />
             <AiOutlineStar style={{ color: "#D26E4B" }} />
           </div>
+          <Link to={`/products/${id}`}>
+
           <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out font-light text-[8px] xl:text-xs text-gray-400">
             ( 2 Reviews )
           </p>
+          </Link>
         </div>
       </div>
     </div>

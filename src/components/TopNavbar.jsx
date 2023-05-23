@@ -54,10 +54,6 @@ function TopNavbar() {
         <div className="hidden md:flex">
           <div className="w-px h-4 bg-gray-300"></div>
           <div className="flex items-center space-x-8 px-2">
-            <div className="topbar__item flex space-x-2 items-center">
-              <AiOutlineInfoCircle size={18} />
-              <p>Need Help</p>
-            </div>
             {
               loggedIn ? (
                 <div onClick={() => dispatch(logoutUser())} className="topbar__item cursor-pointer hover:text-main transition-all duration-150 ease-linear flex space-x-2 items-center">

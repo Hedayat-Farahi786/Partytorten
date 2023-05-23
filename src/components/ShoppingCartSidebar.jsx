@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
 import { removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
+import notFoundImage from '../assets/images/productNoResult.png'
 
 function ShoppingCartSidebar() {
   const showShoppingCartSidebar = useSelector(
@@ -45,7 +46,12 @@ function ShoppingCartSidebar() {
             <div className="shoppingCart__items w-full flex flex-col md:space-y-4 space-y-6">
               
               {
-                cart.length === 0 ? (<p className="text-center text-base font-semibold text-gray-600">No products in the cart.</p>) : (
+                cart.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center space-y-5 my-10">
+                    <img src={notFoundImage} alt="Not Found Image"/>
+                    <p className="text-center text-base font-semibold text-gray-600">No products in the cart.</p>
+                  </div>
+                ) : (
                 cart.map(item => (
                     <div key={item.product._id} className="flex items-center justify-between">
                     <div className="flex items-start space-x-4">
@@ -79,17 +85,19 @@ function ShoppingCartSidebar() {
                 <div className="h-px w-full bg-gray-300"></div>
               </div>
               <div>
-                <div className="flex items-center justify-center cursor-pointer hover:text-main">
+                {/* <div className="flex items-center justify-center cursor-pointer hover:text-main">
                   <p
-                    onClick={() => dispatch(toggleShoppingCartSidebar())}
+                    
                     className="text-sm font-bold border-b-2 border-main"
                   >
-                    <Link to="/shoppingCart">View Cart</Link>
+                    View Cart</Link>
                   </p>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-center">
-                  <button className="bg-black uppercase text-white font-semibold px-6 py-3 text-base md:text-lg rounded md:w-10/12 w-8/12 mt-5 hover:opacity-80 transition-all duration-150 ease-linear">
-                    Go To Checkout
+                  <button onClick={() => dispatch(toggleShoppingCartSidebar())} className="bg-[#e8898a] uppercase text-white font-semibold px-6 py-3 text-base md:text-lg rounded md:w-10/12 w-8/12 mt-5 hover:opacity-80 transition-all duration-150 ease-linear">
+                <Link to="/shoppingCart">
+                    Checkout
+                  </Link>
                   </button>
                 </div>
               </div>

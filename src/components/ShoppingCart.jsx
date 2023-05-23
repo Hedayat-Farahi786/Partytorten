@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiChevronRight } from "react-icons/fi";
 import { IoCloseSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Divider from "./Divider";
 import ShoppingCartItem from "./ShoppingCartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { incrementQuantity, removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
+import { toggleShowUserAccount } from "../features/userAccount/userAccount";
 
 function ShoppingCart() {
 
+  const navigate = useNavigate();
+
   const cart = useSelector(state => state.shoppingCart.cart);
+  const loggedIn = useSelector(state => state.userAccount.loggedIn);
+
 
   let total = 0;
   cart.forEach(item => {
@@ -18,6 +23,14 @@ function ShoppingCart() {
   });
 
   const dispatch = useDispatch();
+
+  const goToCheckout = () => {
+    if(loggedIn){
+      navigate("/checkout");
+    } else {
+      dispatch(toggleShowUserAccount());
+    }
+  }
 
 
   useEffect(() => {
@@ -30,9 +43,7 @@ function ShoppingCart() {
         <div className="uppercase text-xs md:text-2xl text-gray-600 font-bold flex items-center space-x-2">
           <span className="text-main">1. Shopping Cart</span>
           <FiChevronRight size={30} color="#CCCCCC" />
-          <Link to="/checkout">
-            <span className="cursor-pointer">2. Checkout</span>
-          </Link>
+            <span onClick={() => goToCheckout()} className="cursor-pointer">2. Checkout</span>
           <FiChevronRight size={30} color="#CCCCCC" />
           <span>3. Order Complete</span>
         </div>
@@ -97,7 +108,11 @@ function ShoppingCart() {
             </table>
           </div>
           <div className="flex md:hidden shoppingCart__mobileView w-full flex-col space-y-6">
-            <ShoppingCartItem />
+           {
+            cart.map(item => (
+              <ShoppingCartItem ket={item.product._id} item={item} />
+            ))
+           }
           </div>
           <Link to="/">
             <button className="flex rounded items-center space-x-3 bg-black text-white uppercase px-6 py-2 font-semibold">
@@ -140,8 +155,8 @@ function ShoppingCart() {
             <span className="text-base font-semibold">Total</span>
             <span className="text-2xl font-bold">€{total.toFixed(2)}</span>
           </div>
-          <button className="w-full rounded uppercase text-white bg-black py-4 font-bold">
-            <Link to="/checkout">Procced to checkout</Link>
+          <button onClick={()=> goToCheckout()} className="w-full rounded uppercase text-white bg-black py-4 font-bold">
+            Procced to checkout
           </button>
         </div>
       </div>

@@ -7,20 +7,11 @@ import {
 import Product from "./Product";
 import {useWindowInfo} from 'react-window-info-hook'
 import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLoading } from "../features/products/products";
 function ProductsList({title}) {
 
-  
-  const [products, setProducts] = useState([]);
-
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    axios.get('https://partytorten-backend.vercel.app/products').then(response => {
-      setProducts(response.data);
-    }).catch(error => {
-      console.error('Error fetching products:', error);
-    });
-  }, []);
+  const products = useSelector(state => state.products.products);
 
 
   const [activeItemIndex, setActiveItemIndex] = useState(0);

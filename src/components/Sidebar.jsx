@@ -5,10 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/sideMenu/sideMenu";
 import { Sidebar as SideBar } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { toggleShowUserAccount } from "../features/userAccount/userAccount";
+import { logoutUser, toggleShowUserAccount } from "../features/userAccount/userAccount";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
 function Sidebar() {
   const showSidebar = useSelector((state) => state.sideMenu.showSidebar);
+  const loggedIn = useSelector(state => state.userAccount.loggedIn);
+
 
   const dispatch = useDispatch();
 
@@ -88,7 +91,19 @@ function Sidebar() {
                     >
                       About Us
                     </SideBar.Item>
-                    <SideBar.Item
+                    {
+                      loggedIn ? (
+                        <SideBar.Item
+                      onClick={() => {
+                        dispatch(toggleSidebar());
+                        dispatch(logoutUser())
+                      }}
+                      icon={RiLogoutCircleLine}
+                    >
+                      Logout
+                    </SideBar.Item>
+                      ) : (
+                        <SideBar.Item
                       onClick={() => {
                         dispatch(toggleSidebar());
                         dispatch(toggleShowUserAccount());
@@ -97,6 +112,8 @@ function Sidebar() {
                     >
                       Sign In
                     </SideBar.Item>
+                      )
+                    }
                   </SideBar.ItemGroup>
                 </SideBar.Items>
               </SideBar>

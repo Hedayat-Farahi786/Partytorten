@@ -14,13 +14,86 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { clearCart } from "../features/shoppingCart/shoppingCart";
+
+
 
 function Checkout() {
-  const [subtotal, setSubtotal] = useState(50);
-  const [total, setTotal] = useState(subtotal);
-  const [sameAddress, setSameAddress] = useState(false);
+  // const [sameAddress, setSameAddress] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loggedIn = useSelector(state => state.userAccount.loggedIn);
+
+
+
+  const [street, setStreet] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [additionalDetails, setAdditionalDetails] = useState("");
+  const [phone, setPhone] = useState("");
+  const [otherNotes, setOtherNotes] = useState("");
+
+  const cart = useSelector(state => state.shoppingCart.cart);
+
+  const user = useSelector(
+    (state) => state.userAccount.user
+  );
+
+  let total = 0;
+  cart.forEach(item => {
+    total += item.product.price * item.quantity;
+  });
+
+
+  const placeOrder = () => {
+
+    const products = cart.map(item => {
+      return {
+        product: item.product._id,
+        quantity: item.quantity,
+        price: Number((item.product.price * item.quantity).toFixed(2))
+      }
+    });
+
+
+    let res = {
+      user: user.userId,
+      products,
+      address: street + " " + houseNumber + ", " + postalCode + " Munich, Germany",
+      phone,
+      email: user.email,
+      trackingNumber: "12345"
+    }
+
+    submitOrder(res);
+  }
+
+  const submitOrder = (orderData) => {
+    axios.post('https://partytorten-backend.vercel.app/order', orderData)
+      .then(response => {
+        // Handle the successful response
+        // console.log('Order submitted successfully:', response.data);
+        dispatch(clearCart())
+        navigate(`/orderSummary/${response.data._id}`);
+        
+      })
+      .catch(error => {
+        // Handle the error
+        console.error('Error submitting order:', error);
+      });
+  };
+
 
   useEffect(() => {
+
+    if(!loggedIn){
+      navigate('/shoppingCart');
+    }
+    
     window.scrollTo(0, 0);
   }, []);
 
@@ -41,9 +114,9 @@ function Checkout() {
         <div className="checkout__left w-full md:w-7/12 flex flex-col items-start space-y-10">
           <form className="w-full">
             <p className="text-left font-bold uppercase mb-12 text-2xl">
-              Billing Address
+              Your Address
             </p>
-            <div className="flex flex-col md:flex-row md:space-x-4">
+            {/* <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="mb-6 md:w-6/12 flex flex-col items-start">
                 <label
                   for="billFirstName"
@@ -74,40 +147,9 @@ function Checkout() {
                   required
                 />
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row md:space-x-4">
-              <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                <label
-                  for="billEmail"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Email <span className="text-[#ca2626]">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="billEmail"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Email..."
-                  required
-                />
-              </div>
-              <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                <label
-                  for="billPhone"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Phone <span className="text-[#ca2626]">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="billPhone"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="+0123456789"
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row md:space-x-4">
+            </div> */}
+           
+            {/* <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="mb-6 md:w-6/12 flex flex-col items-start">
                 <label
                   for="billCountry"
@@ -140,7 +182,7 @@ function Checkout() {
                   required
                 />
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="mb-6 md:w-6/12 flex flex-col items-start">
                 <label
@@ -152,6 +194,8 @@ function Checkout() {
                 <input
                   type="text"
                   id="billStreet"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Street Name..."
                   required
@@ -168,6 +212,8 @@ function Checkout() {
                   <input
                     type="text"
                     id="billHouseNumber"
+                    value={houseNumber}
+                  onChange={(e) => setHouseNumber(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="House number..."
                     required
@@ -183,6 +229,8 @@ function Checkout() {
                   <input
                     type="text"
                     id="billPostalCode"
+                    value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Postal code..."
                     required
@@ -190,7 +238,43 @@ function Checkout() {
                 </div>
               </div>
             </div>
-            <div className="flex items-start my-6">
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="mb-6 md:w-6/12 flex flex-col items-start">
+                <label
+                  for="billEmail"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Additional Details <span className="text-gray-500 text-xs">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  id="additionalDetails"
+                  value={additionalDetails}
+                  onChange={(e) => setAdditionalDetails(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Additional Deatils..."
+                  required
+                />
+              </div>
+              <div className="mb-6 md:w-6/12 flex flex-col items-start">
+                <label
+                  for="billPhone"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Phone <span className="text-[#ca2626]">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="billPhone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="+0123456789"
+                  required
+                />
+              </div>
+            </div>
+            {/* <div className="flex items-start my-6">
               <div className="flex items-center h-5">
                 <input
                   id="remember"
@@ -205,8 +289,8 @@ function Checkout() {
               >
                 Ship to a differrent address?
               </label>
-            </div>
-            {sameAddress && (
+            </div> */}
+            {/* {sameAddress && (
               <div className="w-full">
                 <p className="text-left font-bold uppercase my-12 text-2xl">
                   Shipping Address
@@ -359,7 +443,7 @@ function Checkout() {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
             <div className="mt-12 md:mb-6 flex flex-col items-start">
               <label
                 for="otherNotes"
@@ -371,6 +455,8 @@ function Checkout() {
               <textarea
                 id="otherNotes"
                 rows="6"
+                value={otherNotes}
+                  onChange={(e) => setOtherNotes(e.target.value)}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Note about your order, e.g. special notes for delivery."
               ></textarea>
@@ -382,25 +468,23 @@ function Checkout() {
           <Divider />
           <div className="flex flex-col items-start w-full space-y-4">
             <p className="text-base font-semibold">Products</p>
-            <div className="w-full flex items-start justify-between text-sm text-gray-500 space-x-6">
+            {
+              cart.map((item, i) => (
+                <div key={i} className="w-full flex items-start justify-between text-sm text-gray-500 space-x-6">
               <span className="text-left">
-                Fashionable women's original trucker - Brown, Medium x 1
+                {item.product.name} x {item.quantity}
               </span>
-              <span className="font-semibold">€38.00</span>
+              <span className="font-semibold">€{(item.product.price * item.quantity).toFixed(2)}</span>
             </div>
-            <div className="w-full flex items-start justify-between text-sm text-gray-500 space-x-6">
-              <span className="text-left">
-                converse blue training shoes - Blue, Medium x 1
-              </span>
-              <span className="font-semibold">€35.00</span>
-            </div>
+              ))
+            }
           </div>
           <Divider />
           <div className="text-base font-semibold flex items-center justify-between w-full">
             <span>Subtotal</span>
-            <span className="font-bold">€{subtotal}</span>
+            <span className="font-bold">€{total.toFixed(2)}</span>
           </div>
-          <Divider />
+          {/* <Divider />
           <p className="text-base font-medium">Calculate Shipping</p>
           <div className="flex flex-col space-y-4 w-full">
             <div className="w-full">
@@ -472,16 +556,16 @@ function Checkout() {
                 </svg>
               </label>
             </div>
-          </div>
+          </div> */}
           <Divider />
           <div className="w-full flex flex-col items-start text-sm space-y-4">
             <div className="flex items-start space-x-2">
               <span>Subtotal:</span>
-              <span className="font-medium">€{subtotal}</span>
+              <span className="font-medium">€{total.toFixed(2)}</span>
             </div>
             <div className="flex items-start space-x-2">
               <span>Delivery:</span>
-              <span className="font-medium">€{total - subtotal}</span>
+              <span className="font-medium">€0</span>
             </div>
             <div className="flex items-start space-x-2">
               <span>Discount:</span>
@@ -533,7 +617,7 @@ function Checkout() {
                         required
                       />
                     </div>
-                    <div className="flex items-center justify-center space-x-4">
+                    <div className="flex items-center justify-between space-x-2">
                       <div className="mb-3 flex flex-col items-start">
                         <label
                           for="expiryDate"
@@ -595,24 +679,25 @@ function Checkout() {
                         required
                       />
                     </div>
-                    <Link to="/orderSummary">
+                    {/* <Link to="/orderSummary"> */}
                       <button
                         type="submit"
+                        onClick={()=> placeOrder()}
                         className="bg-black text-white uppercase font-semibold w-full py-2 rounded"
                       >
                         Place Order
                       </button>
-                    </Link>
+                    {/* </Link> */}
                   </form>
                 </TabPanel>
                 <TabPanel key={1} value="paypal">
                   <div className="py-10">
-                    <Link to="/orderSummary">
-                      <div className="flex items-center justify-center space-x-2 bg-[#F7CA3E] hover:bg-[#f7c93ee7] transition-all duration-150 ease-linear font-semibold py-2 rounded-md cursor-pointer shadow">
+                    {/* <Link to="/orderSummary"> */}
+                      <div onClick={()=> placeOrder()} className="flex items-center justify-center space-x-2 bg-[#F7CA3E] hover:bg-[#f7c93ee7] transition-all duration-150 ease-linear font-semibold py-2 rounded-md cursor-pointer shadow">
                         <img width={24} src={paypalIcon} alt="" />
                         <span>Pay with payal (€ {total.toFixed(2)})</span>
                       </div>
-                    </Link>
+                    {/* </Link> */}
                   </div>
                 </TabPanel>
               </TabsBody>

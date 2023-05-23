@@ -16,7 +16,7 @@ import Sidebar from "./Sidebar";
 import Filter from "./Filter";
 import UserAccount from "./UserAccount";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logos/logo_black.png";
+import logo from "../assets/images/logos/text-logo.png";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
@@ -61,15 +61,15 @@ cart.forEach(item => {
         <div className="logo flex items-center space-x-4">
           <AiOutlineMenu
             onClick={() => dispatch(toggleSidebar())}
-            size={26}
+            size={24}
             className="block md:hidden cursor-pointer"
           />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
           <div className="flex items-start space-x-3">
             <Link to="/">
-              <img className="my-1 md:my-3 w-32 md:w-48" src={logo} alt="" />
+              <img className="my-1 md:my-3 w-36 md:w-52" src={logo} alt="" />
             </Link>
-            <Badge color="gray">{packageJson.version}</Badge>
+            {/* <Badge color="gray">{packageJson.version}</Badge> */}
           </div>
         </div>
         <div className="hidden md:flex search w-5/12 h-12 relative rounded-md overflow-hidden border-black border">
@@ -82,8 +82,10 @@ cart.forEach(item => {
             <AiOutlineSearch size={20} />
           </span>
         </div>
+
         <div className="flex xl:hidden space-x-4">
-          <AiOutlinePhone size={35} className="rotate-90" />
+          {/* Don't show the phone icon in mobile view */}
+          {/* <AiOutlinePhone size={35} className="rotate-90" /> */}
           <Link
             className="cursor-pointer transition-all duration-150 ease-linear hover:text-main"
             to="/wishlist"

@@ -15,12 +15,20 @@ import "./Carousel.css";
 // import required modules
 import { EffectFade, Pagination } from "swiper";
 
-import banner from "../assets/images/banner-1.jpg";
+import mobileBanner from "../assets/images/mobile_banner.png";
+import desktopBanner from "../assets/images/desktop_banner.png";
+import { useWindowInfo } from "react-window-info-hook";
+import Divider from "./Divider";
+
+
 
 export default function Carousel() {
-  SwiperCore.use([Autoplay]);
+  const info = useWindowInfo();
+
+SwiperCore.use([Autoplay]);
   return (
     <>
+    <Divider />
       <Swiper
         spaceBetween={5}
         // autoplay={{ delay: 4000 }}
@@ -32,31 +40,22 @@ export default function Carousel() {
         className="mySwiper"
       >
         <SwiperSlide className="relative w-full h-full">
-          <img className="-z-10 absolute top-0 right-0 left-0" src={banner} />
-          <div className="z-10 w-10/12 mx-auto h-full flex flex-col space-y-6 items-start justify-center bg">
+          <img className="-z-10 absolute top-0 right-0 left-0" src={info.mobile ? mobileBanner : desktopBanner} />
+          <div className="z-10 w-10/12 mx-auto h-full flex flex-col space-y-5 md:space-y-8 items-start justify-start pt-14 md:justify-center">
             <div className="flex flex-col items-start">
-              <p className="text-4xl font-bold text-white md:text-7xl">
-                Fashionable
+              <p className="text-4xl font-bold text-white md:text-[#e8898a] md:text-7xl">
+                Delicious Cakes
               </p>
-              <p className="text-4xl md:text-6xl text-white">Collection</p>
+              <p className="text-3xl md:text-6xl text-white md:text-[#e8898a]">For Everyone</p>
             </div>
-            <p className="text-xs md:text-base text-white">
-              Get free shipping on all orders over $99.00
+            <p className="text-sm md:text-base text-white md:text-[#e8898a]">
+              Enjoy the best home made cakes!
             </p>
-            <button className="uppercase text-white bg-black cursor-pointer rounded px-6 md:px-8 py-2 md:py-4 font-bold text-sm md:text-lg flex items-center space-x-2">
-              <span>Shop now</span>
+            <button className="uppercase text-white md:text-[#e8898a] border-2 border-white md:border-[#e8898a] cursor-pointer rounded px-4 md:px-8 py-1 md:py-3 font-semibold text-xs md:text-lg flex items-center space-x-2">
+              <span>Order now</span>
               <AiOutlineArrowRight size={20} />
             </button>
           </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
         </SwiperSlide>
       </Swiper>
     </>

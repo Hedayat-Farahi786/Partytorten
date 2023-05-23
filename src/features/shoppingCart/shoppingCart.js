@@ -34,10 +34,13 @@ export const shoppingCartSlice = createSlice({
                 return;
             }
         }
+    },
+    clearCart(state){
+        state.cart = [];
     }
   },
 });
 
-export const { addToShoppingCart, removeFromShoppingCart, incrementQuantity } = shoppingCartSlice.actions;
+export const { addToShoppingCart, removeFromShoppingCart, incrementQuantity, clearCart } = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;
