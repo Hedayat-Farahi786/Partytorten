@@ -1,6 +1,6 @@
 {
   "name": "farahi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
@@ -19,7 +19,9 @@
     "react": "^18.2.0",
     "react-carousel-minimal": "^1.4.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-horizontal-scrolling-menu": "^4.0.4",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.7.1",
     "react-image-gallery": "^1.2.11",
     "react-items-carousel": "^2.8.0",
@@ -29,7 +31,6 @@
     "react-router-dom": "^6.5.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
-    "react-toast-notifications": "^2.5.1",
     "react-window-info-hook": "^1.1.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^8.4.5",

@@ -19,7 +19,7 @@ function UserAccount() {
     <>
       {showUserAccount && (
         <div
-          className="transition-all duration-200 ease-linear fixed flex items-start md:items-center pt-10 md:pt-0 justify-center top-0 left-0 bottom-0 right-0 h-full w-full z-50 bg-[#000000c9] overflow-hidden"
+          className="transition-all duration-200 ease-linear fixed flex items-start md:items-center pt-24 md:pt-0 justify-center top-0 left-0 bottom-0 right-0 h-full w-full z-50 bg-[#000000c9] overflow-hidden"
           id="review"
         >
           <div className="w-10/12 md:w-full relative bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

@@ -14,7 +14,7 @@ function Services() {
             Free Shipping & Return
           </p>
           <p className="text-xs md:text-sm font-light">
-            Free Shipping on orders over $99
+            Free shipping and easy returns
           </p>
         </div>
       </div>
@@ -26,7 +26,7 @@ function Services() {
             Customer Support 24/7
           </p>
           <p className="text-xs md:text-sm font-light">
-            Free Shipping on orders over $99
+            Round-the-clock assistance
           </p>
         </div>
       </div>
@@ -38,7 +38,7 @@ function Services() {
             100$ Secure Payemnt
           </p>
           <p className="text-xs md:text-sm font-light">
-            We ensure secure payment!
+            We ensure safe payment
           </p>
         </div>
       </div>

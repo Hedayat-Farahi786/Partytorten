@@ -2,12 +2,16 @@ import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
 import { removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
 import notFoundImage from '../assets/images/productNoResult.png'
 
 function ShoppingCartSidebar() {
+
+  const navigate = useNavigate();
+
+
   const showShoppingCartSidebar = useSelector(
     (state) => state.shoppingCartSidebar.showShoppingCartSidebar
   );
@@ -21,6 +25,13 @@ function ShoppingCartSidebar() {
   
 
   const dispatch = useDispatch();
+
+
+  const handleCheckout = () => {
+    dispatch(toggleShoppingCartSidebar());
+    navigate("/shoppingCart");
+  }
+
 
   return (
     <>
@@ -94,10 +105,8 @@ function ShoppingCartSidebar() {
                   </p>
                 </div> */}
                 <div className="flex items-center justify-center">
-                  <button onClick={() => dispatch(toggleShoppingCartSidebar())} className="bg-[#e8898a] uppercase text-white font-semibold px-6 py-3 text-base md:text-lg rounded md:w-10/12 w-8/12 mt-5 hover:opacity-80 transition-all duration-150 ease-linear">
-                <Link to="/shoppingCart">
+                  <button disabled={cart.length === 0} onClick={() => handleCheckout()} className="bg-[#e8898a] uppercase text-white disabled:cursor-not-allowed disabled:opacity-50 font-semibold px-6 py-3 text-base md:text-lg rounded md:w-10/12 w-8/12 mt-5 hover:opacity-80 transition-all duration-150 ease-linear">
                     Checkout
-                  </Link>
                   </button>
                 </div>
               </div>

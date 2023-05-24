@@ -10,6 +10,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategories, addProducts } from "../features/products/products";
 import Footer from "./Footer";
+import { Toaster } from "react-hot-toast";
 
 function Main() {
 
@@ -40,6 +41,7 @@ function Main() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       {
         loading ? (
           <div className="w-full h-96 z-50 overflow-hidden flex flex-col items-center justify-center">

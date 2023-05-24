@@ -5,13 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/sideMenu/sideMenu";
 import { Sidebar as SideBar } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { logoutUser, toggleShowUserAccount } from "../features/userAccount/userAccount";
+import {
+  logoutUser,
+  toggleShowUserAccount,
+} from "../features/userAccount/userAccount";
 import { RiLogoutCircleLine } from "react-icons/ri";
 
 function Sidebar() {
   const showSidebar = useSelector((state) => state.sideMenu.showSidebar);
-  const loggedIn = useSelector(state => state.userAccount.loggedIn);
+  const loggedIn = useSelector((state) => state.userAccount.loggedIn);
 
+  const categories = useSelector((state) => state.products.categories);
 
   const dispatch = useDispatch();
 
@@ -48,7 +52,7 @@ function Sidebar() {
                 />
                 <button
                   type="submit"
-                  className="text-white absolute right-2.5 bottom-2.5 bg-black hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:opacity-70 dark:focus:ring-black"
+                  className="text-white absolute right-2.5 bottom-2.5 bg-main hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:opacity-70 dark:focus:ring-black"
                 >
                   Search
                 </button>
@@ -66,18 +70,14 @@ function Sidebar() {
                       <Link to="/">Home</Link>
                     </SideBar.Item>
                     <SideBar.Collapse icon={HiTable} label="Categories">
-                      <SideBar.Item onClick={() => dispatch(toggleSidebar())}>
-                        Men
-                      </SideBar.Item>
-                      <SideBar.Item onClick={() => dispatch(toggleSidebar())}>
-                        Women
-                      </SideBar.Item>
-                      <SideBar.Item onClick={() => dispatch(toggleSidebar())}>
-                        Accessories
-                      </SideBar.Item>
-                      <SideBar.Item onClick={() => dispatch(toggleSidebar())}>
-                        Accessories
-                      </SideBar.Item>
+                      {categories.map((category) => (
+                        <SideBar.Item
+                          key={category._id}
+                          onClick={() => dispatch(toggleSidebar())}
+                        >
+                          <Link to="/allProducts">{category.name}</Link>
+                        </SideBar.Item>
+                      ))}
                     </SideBar.Collapse>
                     <SideBar.Item
                       onClick={() => dispatch(toggleSidebar())}
@@ -91,29 +91,27 @@ function Sidebar() {
                     >
                       About Us
                     </SideBar.Item>
-                    {
-                      loggedIn ? (
-                        <SideBar.Item
-                      onClick={() => {
-                        dispatch(toggleSidebar());
-                        dispatch(logoutUser())
-                      }}
-                      icon={RiLogoutCircleLine}
-                    >
-                      Logout
-                    </SideBar.Item>
-                      ) : (
-                        <SideBar.Item
-                      onClick={() => {
-                        dispatch(toggleSidebar());
-                        dispatch(toggleShowUserAccount());
-                      }}
-                      icon={HiUser}
-                    >
-                      Sign In
-                    </SideBar.Item>
-                      )
-                    }
+                    {loggedIn ? (
+                      <SideBar.Item
+                        onClick={() => {
+                          dispatch(toggleSidebar());
+                          dispatch(logoutUser());
+                        }}
+                        icon={RiLogoutCircleLine}
+                      >
+                        Logout
+                      </SideBar.Item>
+                    ) : (
+                      <SideBar.Item
+                        onClick={() => {
+                          dispatch(toggleSidebar());
+                          dispatch(toggleShowUserAccount());
+                        }}
+                        icon={HiUser}
+                      >
+                        Sign In
+                      </SideBar.Item>
+                    )}
                   </SideBar.ItemGroup>
                 </SideBar.Items>
               </SideBar>

@@ -6,8 +6,21 @@ import { Dropdown } from "flowbite-react";
 import Topbar from "./Topbar";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  logoutUser,
+  toggleLoggedIn,
+  toggleShowUserAccount,
+} from "../features/userAccount/userAccount";
+import { useEffect } from "react";
+import { AiOutlinePoweroff, AiOutlineUser } from "react-icons/ai";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
 function Navbar() {
+  const categories = useSelector((state) => state.products.categories);
+
+
   return (
     <div className="w-full bg-white">
       <TopNavbar />
@@ -25,18 +38,11 @@ function Navbar() {
               label="Categories"
               inline={true}
             >
-              <Dropdown.Item>
-                <Link to="/allProducts">Men</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/allProducts">Women</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/allProducts">Accessories</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/allProducts">Cosmetics</Link>
-              </Dropdown.Item>
+              {categories.map((category) => (
+                <Dropdown.Item>
+                  <Link to="/allProducts">{category.name}</Link>
+                </Dropdown.Item>
+              ))}
             </Dropdown>
             <Link to="/allProducts">
               <p className="menu__item hover:text-main cursor-pointer">
@@ -49,10 +55,13 @@ function Navbar() {
               </p>
             </Link>
           </div>
+
           <div className="topbar__down__right flex items-center justify-center text-sm space-x-2 font-semibold cursor-pointer">
             <MdOutlineLocalOffer size={20} />
             <p>Special Offers</p>
           </div>
+
+
         </div>
       </div>
     </div>

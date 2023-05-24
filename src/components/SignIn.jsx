@@ -5,14 +5,23 @@ import { toggleIsLogin } from "../features/userSign/userSign";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { loginUser, toggleLoggedIn, toggleShowUserAccount } from "../features/userAccount/userAccount";
+import { useForm } from "react-hook-form";
+import { Toaster, toast } from "react-hot-toast";
 
 function Login() {
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset
+  } = useForm();
+
+
+
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const isLogin = useSelector((state) => state.userSign.isLogin);
 
@@ -27,18 +36,26 @@ function Login() {
     );
   }
 
-  const handleSubmit = (e) => {
+
+  const onSubmit = (data) => {
     setLoading(true);
-    e.preventDefault();
-    axios.post('https://partytorten-backend.vercel.app/login', { email, password }).then(res => {
+    axios.post('https://partytorten-backend.vercel.app/login', data).then(res => {
       const token = res.data.token;
       localStorage.setItem('token', token);
       setLoading(false);
       dispatch(toggleLoggedIn(true));
       dispatch(loginUser(decodeToken(token)));
       dispatch(toggleShowUserAccount());
+      reset();
+      toast.success('Logged In Successfully!');
     }).catch(err => {
-      setMessage(err.response.data.message);
+      if(err.response.data.message === "Invalid email"){
+        toast.error("User with this email does not exist!")
+      }else if(err.response.data.message === "Invalid password"){
+        toast.error("Incorrect Password!")
+      } else {
+        toast.error(err.response.data.message);
+      }
       setLoading(false);
 
     })
@@ -47,7 +64,8 @@ function Login() {
   const dispatch = useDispatch();
 
   return (
-    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex flex-col items-start">
         <label
           for="email"
@@ -56,15 +74,24 @@ function Login() {
           Email
         </label>
         <input
-          type="email"
+          type="text"
           name="email"
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Email..."
-          required=""
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address",
+            },
+          })}
         />
+        {errors.email && (
+          <span className="text-left text-xs text-red-500">
+            {errors.email.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col items-start">
         <label
@@ -78,13 +105,21 @@ function Login() {
           name="password"
           id="password"
           placeholder="Password..."
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="bg-gray-50 text-xs md:text-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required=""
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters long",
+            },
+          })}
         />
+        {errors.password && (
+          <span className="text-left text-xs text-red-500">
+            {errors.password.message}
+          </span>
+        )}
       </div>
-      <p className="text-red-500 text-xs text-left">{message}</p>
       <div className="flex items-center justify-between text-xs md:text-sm">
         <div className="flex items-start">
           <div className="flex items-center h-5">
@@ -115,16 +150,16 @@ function Login() {
       >
         <div className="flex items-center space-x-2">
           {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
-          <p>Sign in</p>
+          <p>Login</p>
         </div>
       </button>
-      <button
+      {/* <button
         type="submit"
         className="w-full flex items-center justify-center space-x-4 text-gray-900 border bg-white font-bold py-2 md:py-3 rounded-md"
       >
         <FcGoogle size={24} />
         <span>Log in with Google</span>
-      </button>
+      </button> */}
       <p className="text-xs md:text-sm font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <a

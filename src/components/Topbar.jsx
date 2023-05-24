@@ -1,12 +1,19 @@
-import { Badge } from "flowbite-react";
+import { Badge, Dropdown } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import {
   AiOutlineSearch,
   AiOutlinePhone,
   AiOutlineHeart,
   AiOutlineMenu,
+  AiOutlineUser,
 } from "react-icons/ai";
-import { HiOutlineShoppingBag } from "react-icons/hi";
+import {
+  HiMenu,
+  HiOutlineLogin,
+  HiOutlineShoppingBag,
+  HiOutlineUserCircle,
+  HiUserCircle,
+} from "react-icons/hi";
 import packageJson from "../../package.json";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShoppingCartSidebar } from "../features/shoppingCartSidebar/shoppingCartSidebar";
@@ -17,21 +24,47 @@ import Filter from "./Filter";
 import UserAccount from "./UserAccount";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logos/text-logo.png";
+import {
+  loginUser,
+  logoutUser,
+  toggleLoggedIn,
+  toggleShowUserAccount,
+} from "../features/userAccount/userAccount";
 
 function Topbar() {
   const [stickyClass, setStickyClass] = useState("relative");
 
-
-  const cart = useSelector(state => state.shoppingCart.cart);
+  const cart = useSelector((state) => state.shoppingCart.cart);
 
   let total = 0;
-cart.forEach(item => {
-  total += item.product.price * item.quantity;
-});
+  cart.forEach((item) => {
+    total += item.product.price * item.quantity;
+  });
 
+  const loggedIn = useSelector((state) => state.userAccount.loggedIn);
+  const user = useSelector((state) => state.userAccount.user);
+
+  const decodeToken = (token) => {
+    return JSON.parse(
+      decodeURIComponent(
+        atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join("")
+      )
+    );
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", stickNavbar);
+
+    let token = localStorage.getItem("token");
+    if (token) {
+      dispatch(toggleLoggedIn(true));
+      dispatch(loginUser(decodeToken(token)));
+    } else {
+      dispatch(toggleLoggedIn(false));
+    }
 
     return () => {
       window.removeEventListener("scroll", stickNavbar);
@@ -59,9 +92,9 @@ cart.forEach(item => {
       <UserAccount />
       <div className="w-11/12 md:w-10/12 mx-auto py-4 flex items-center justify-between">
         <div className="logo flex items-center space-x-4">
-          <AiOutlineMenu
+          <HiMenu
             onClick={() => dispatch(toggleSidebar())}
-            size={24}
+            size={30}
             className="block md:hidden cursor-pointer"
           />
           {/* <img src={logo} alt="logo" className="w-14 mr-10" /> */}
@@ -83,35 +116,75 @@ cart.forEach(item => {
           </span>
         </div>
 
-        <div className="flex xl:hidden space-x-4">
+        <div className="flex xl:hidden space-x-5">
           {/* Don't show the phone icon in mobile view */}
           {/* <AiOutlinePhone size={35} className="rotate-90" /> */}
-          <Link
-            className="cursor-pointer transition-all duration-150 ease-linear hover:text-main"
-            to="/wishlist"
-          >
-            <AiOutlineHeart size={35} />
-          </Link>
 
           <div
             onClick={() => dispatch(toggleShoppingCartSidebar())}
             className="shoppingCart relative"
           >
-            <HiOutlineShoppingBag size={35} />
-            <div className="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
-            {cart.length}
+            <HiOutlineShoppingBag size={30} />
+            <div className="inline-flex absolute -top-2 -right-2 justify-center items-center w-5 h-5 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
+              {cart.length}
             </div>
           </div>
+
+          {loggedIn ? (
+            <Dropdown
+              label={
+                <HiOutlineUserCircle
+                  className="transition-all duration-150 ease-linear hover:text-main"
+                  size={30}
+                />
+              }
+              arrowIcon={false}
+              inline={true}
+            >
+              <Dropdown.Header>
+                <span className="block text-sm">{user.name}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user.email}
+                </span>
+              </Dropdown.Header>
+              {/* <Dropdown.Item>Dashboard</Dropdown.Item>
+              <Dropdown.Item>Settings</Dropdown.Item>
+              <Dropdown.Divider /> */}
+              <Dropdown.Item onClick={() => dispatch(logoutUser())}>
+                Sign out
+              </Dropdown.Item>
+            </Dropdown>
+          ) : (
+            // <div
+            //   onClick={() => dispatch(toggleShowUserAccount())}
+            //   className="topbar__down__right flex items-center justify-center text-sm space-x-4 font-semibold cursor-pointer"
+            // >
+            //   <p>Sign In / Sign Up</p>
+            //   <AiOutlineUser size={18} />
+            // </div>
+
+            // <button
+            // onClick={() => dispatch(toggleShowUserAccount())}
+            //       className="text-white bg-main font-medium rounded-lg text-xs px-4 py-1"
+            //     >
+            //       Login
+            //     </button>
+
+            <HiOutlineLogin
+              onClick={() => dispatch(toggleShowUserAccount())}
+              size={30}
+            />
+          )}
         </div>
         <div className="hidden xl:flex actions items-center space-x-5">
-          <div className="actions__item flex items-center space-x-2">
+          {/* <div className="actions__item flex items-center space-x-2">
             <AiOutlinePhone size={40} className="rotate-90" />
             <div className="flex flex-col items-start">
               <p className="text-xs">Call Us Now:</p>
               <p className="text-sm font-bold">0(800)123-456</p>
             </div>
           </div>
-          <div className="w-px h-12 bg-gray-300"></div>
+          <div className="w-px h-12 bg-gray-300"></div> */}
           <div className="actions__item cursor-pointer transition-all duration-150 ease-linear hover:text-main">
             <Link to="/wishlist">
               <AiOutlineHeart size={40} />
@@ -133,6 +206,70 @@ cart.forEach(item => {
               </div>
             </div>
           </div>
+          <div className="w-px h-12 bg-gray-300"></div>
+
+          {loggedIn ? (
+            <div className="actions__item flex items-center space-x-2 transition-all duration-150 ease-linear cursor-pointer">
+              <div className="flex flex-col items-end">
+                <p className="text-xs">Logged In As:</p>
+                <p className="text-sm font-bold">{user.name}</p>
+              </div>
+              <Dropdown
+                label={
+                  <HiOutlineUserCircle
+                    className="transition-all duration-150 ease-linear hover:text-main"
+                    size={40}
+                  />
+                }
+                arrowIcon={false}
+                inline={true}
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">{user.name}</span>
+                  <span className="block truncate text-sm font-medium">
+                    {user.email}
+                  </span>
+                </Dropdown.Header>
+                {/* <Dropdown.Item>Dashboard</Dropdown.Item>
+                <Dropdown.Item>Settings</Dropdown.Item>
+                <Dropdown.Divider /> */}
+                <Dropdown.Item onClick={() => dispatch(logoutUser())}>
+                  Sign out
+                </Dropdown.Item>
+              </Dropdown>
+              {/* <HiOutlineUserCircle size={30} /> */}
+            </div>
+          ) : (
+            // <div
+            //   onClick={() => dispatch(toggleShowUserAccount())}
+            //   className="topbar__down__right flex items-center justify-center text-sm space-x-4 font-semibold cursor-pointer"
+            // >
+            //   <p>Sign In / Sign Up</p>
+            //   <AiOutlineUser size={18} />
+            // </div>
+
+            <div
+              onClick={() => dispatch(toggleShowUserAccount())}
+              className="actions__item flex items-center space-x-2 transition-all duration-150 ease-linear hover:text-main cursor-pointer"
+            >
+              <div className="flex flex-col items-end">
+                <p className="text-xs">Register or:</p>
+                <p className="text-sm font-bold">Login</p>
+              </div>
+              <HiOutlineLogin size={40} />
+            </div>
+          )}
+
+          {/* <div
+            onClick={() => dispatch(toggleShoppingCartSidebar())}
+            className="actions__item flex items-center space-x-2 transition-all duration-150 ease-linear hover:text-main cursor-pointer"
+          >
+            <div className="flex flex-col items-start">
+              <p className="text-xs">Logged In As:</p>
+              <p className="text-sm font-bold">Aman Farahi</p>
+            </div>
+              <HiOutlineUserCircle size={40} />
+          </div> */}
         </div>
       </div>
     </div>

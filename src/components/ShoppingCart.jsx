@@ -6,32 +6,32 @@ import { Link, useNavigate } from "react-router-dom";
 import Divider from "./Divider";
 import ShoppingCartItem from "./ShoppingCartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { incrementQuantity, removeFromShoppingCart } from "../features/shoppingCart/shoppingCart";
+import {
+  incrementQuantity,
+  removeFromShoppingCart,
+} from "../features/shoppingCart/shoppingCart";
 import { toggleShowUserAccount } from "../features/userAccount/userAccount";
 
 function ShoppingCart() {
-
   const navigate = useNavigate();
 
-  const cart = useSelector(state => state.shoppingCart.cart);
-  const loggedIn = useSelector(state => state.userAccount.loggedIn);
-
+  const cart = useSelector((state) => state.shoppingCart.cart);
+  const loggedIn = useSelector((state) => state.userAccount.loggedIn);
 
   let total = 0;
-  cart.forEach(item => {
+  cart.forEach((item) => {
     total += item.product.price * item.quantity;
   });
 
   const dispatch = useDispatch();
 
   const goToCheckout = () => {
-    if(loggedIn){
+    if (loggedIn) {
       navigate("/checkout");
     } else {
       dispatch(toggleShowUserAccount());
     }
-  }
-
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,7 +43,9 @@ function ShoppingCart() {
         <div className="uppercase text-xs md:text-2xl text-gray-600 font-bold flex items-center space-x-2">
           <span className="text-main">1. Shopping Cart</span>
           <FiChevronRight size={30} color="#CCCCCC" />
-            <span onClick={() => goToCheckout()} className="cursor-pointer">2. Checkout</span>
+          <span onClick={() => goToCheckout()} className="cursor-pointer">
+            2. Checkout
+          </span>
           <FiChevronRight size={30} color="#CCCCCC" />
           <span>3. Order Complete</span>
         </div>
@@ -70,52 +72,77 @@ function ShoppingCart() {
                 </tr>
               </thead>
               <tbody>
-                {
-                  cart.length === 0 ? (<p className="text-center text-2xl font-semibold text-gray-600 w-full mt-10">No products in the cart.</p>) : (
-                  cart.map(item => (
-                    <tr key={item.product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 dark:text-white"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <img
-                        width={80}
-                        src={item.product.image}
-                        alt=""
-                      />
-                      <p>{item.product.name}</p>
-                    </div>
-                  </th>
-                  <td className="text-black font-semibold py-4 px-6">€{item.product.price}</td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center justify-between border rounded-md">
-                      <button className="px-3 py-2 border-r cursor-pointer" onClick={()=> dispatch(removeFromShoppingCart(item.product))}>-</button>
-                      <span className="px-6 py-2 font-bold">{item.quantity}</span>
-                      <button className="px-3 py-2 border-l cursor-pointer" onClick={()=> dispatch(incrementQuantity(item.product))}>+</button>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-black font-bold ">€{(item.product.price * item.quantity).toFixed(2)}</td>
-                  <td className="py-4 px-6 ">
-                    <div onClick={()=> dispatch(removeFromShoppingCart(item.product))} className="flex items-center justify-center border rounded-full w-8 h-8 cursor-pointer transition-all duration-150 ease-linear hover:text-main">
-                      <IoCloseSharp size={20} />
-                    </div>
-                  </td>
-                </tr>
-                  )))
-                }
+                {cart.length === 0 ? (
+                  <p className="text-center text-2xl font-semibold text-gray-600 w-full mt-10">
+                    No products in the cart.
+                  </p>
+                ) : (
+                  cart.map((item) => (
+                    <tr
+                      key={item.product._id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 dark:text-white"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <img width={80} src={item.product.image} alt="" />
+                          <p>{item.product.name}</p>
+                        </div>
+                      </th>
+                      <td className="text-black font-semibold py-4 px-6">
+                        €{item.product.price}
+                      </td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center justify-between border rounded-md">
+                          <button
+                            className="px-3 py-2 border-r cursor-pointer"
+                            onClick={() =>
+                              dispatch(removeFromShoppingCart(item.product))
+                            }
+                          >
+                            -
+                          </button>
+                          <span className="px-6 py-2 font-bold">
+                            {item.quantity}
+                          </span>
+                          <button
+                            className="px-3 py-2 border-l cursor-pointer"
+                            onClick={() =>
+                              dispatch(incrementQuantity(item.product))
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6 text-black font-bold ">
+                        €{(item.product.price * item.quantity).toFixed(2)}
+                      </td>
+                      <td className="py-4 px-6 ">
+                        <div
+                          onClick={() =>
+                            dispatch(removeFromShoppingCart(item.product))
+                          }
+                          className="flex items-center justify-center border rounded-full w-8 h-8 cursor-pointer transition-all duration-150 ease-linear hover:text-main"
+                        >
+                          <IoCloseSharp size={20} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
           <div className="flex md:hidden shoppingCart__mobileView w-full flex-col space-y-6">
-           {
-            cart.map(item => (
+            {cart.map((item) => (
               <ShoppingCartItem ket={item.product._id} item={item} />
-            ))
-           }
+            ))}
           </div>
           <Link to="/">
-            <button className="flex rounded items-center space-x-3 bg-black text-white uppercase px-6 py-2 font-semibold">
+            <button className="hidden md:flex rounded items-center space-x-3 bg-black text-white uppercase px-6 py-2 font-semibold">
               <BsArrowLeft size={22} />
               <span>Continue Shopping</span>
             </button>
@@ -155,9 +182,20 @@ function ShoppingCart() {
             <span className="text-base font-semibold">Total</span>
             <span className="text-2xl font-bold">€{total.toFixed(2)}</span>
           </div>
-          <button onClick={()=> goToCheckout()} className="w-full rounded uppercase text-white bg-black py-4 font-bold">
-            Procced to checkout
-          </button>
+          <div className="w-full flex flex-col items-center justify-center space-y-5">
+            <button
+              onClick={() => goToCheckout()}
+              className="w-full rounded uppercase text-white bg-black py-4 font-bold"
+            >
+              Procced to checkout
+            </button>
+            <Link to="/">
+              <button className="px-5 flex md:hidden items-center justify-center space-x-3 rounded uppercase text-black bg-white border border-black py-3 font-bold">
+                <BsArrowLeft size={22} />
+                <span>Continue Shopping</span>
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

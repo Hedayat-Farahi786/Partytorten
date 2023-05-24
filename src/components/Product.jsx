@@ -1,9 +1,35 @@
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 import { AiFillStar, AiOutlineStar, AiOutlineHeart } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Product({name, description, image, category, price, id}) {
+
+
+  const [categoryName, setCategoryName] = useState("");
+
+  const categories = useSelector(state => state.products.categories);
+
+
+  const handleCategoryLookup = () => {
+    const matchingCategory = categories.find(
+      (cat) => cat._id === category
+    );
+    if (matchingCategory) {
+      setCategoryName(matchingCategory.name);
+    } else {
+      setCategoryName(category);
+    }
+  };
+
+  useEffect(()=>{
+    handleCategoryLookup();
+  },[])
+
+
   return (
     <div className="product w-64 group space-y-2 md:mb-10 border border-gray-100 rounded-md overflow-hidden">
       <div className="product__top relative h-[20%]">
@@ -24,7 +50,7 @@ function Product({name, description, image, category, price, id}) {
       <div className="product__bottom flex items-center justify-between px-4 py-4 space-x-2">
         <div className="flex flex-col items-start space-y-2 overflow-hidden">
         <p className="text-main cursor-pointer transition-all text-ellipsis truncate duration-200 ease-in-out text-[10px] xl:text-xs">
-         {category}
+         {categoryName}
         </p>
         <Link to={`/products/${id}`}>
           <p className="hover:text-main cursor-pointer transition-all text-ellipsis truncate duration-200 ease-in-out font-semibold text-base xl:text-base">

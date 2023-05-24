@@ -9,14 +9,10 @@ import Wishlist from "./components/Wishlist";
 import ShoppingCart from "./components/ShoppingCart";
 import Checkout from "./components/Checkout";
 import OrderSummary from "./components/OrderSummary";
-import { ToastProvider } from 'react-toast-notifications';
-
 
 function App() {
   return (
     <div className="App relative">
-      <ToastProvider placement="bottom-left">
-
         <Navbar />
         <Routes>
           <Route path="*" element={<NotFound />} />
@@ -28,7 +24,6 @@ function App() {
           <Route path="/allProducts" element={<AllProducts />} />
           <Route path="/products/:id" element={<ProductDetails />} />
         </Routes>
-      </ToastProvider>
     </div>
   );
 }
