@@ -8,7 +8,7 @@ function Footer() {
   return (
     <div className="footer bg-[#222222] text-white">
       <div className="footer__top py-10 w-10/12 mx-auto flex flex-wrap flex-col xl:flex-row items-center space-y-8 xl:space-y-0 justify-between">
-        <h1 className="text-4xl font-bold">Farahi</h1>
+        <h1 className="text-4xl font-bold">Partytorten</h1>
         <div className="flex flex-col xl:items-start items-center">
           <p className="font-bold text-base md:text-lg">
             Subscribe to our Newsletter

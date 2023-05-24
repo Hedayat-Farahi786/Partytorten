@@ -19,8 +19,17 @@ import Reviewbar from "./Reviewbar";
 import axios from 'axios';
 import Divider from "./Divider";
 import { addToShoppingCart } from "../features/shoppingCart/shoppingCart";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { useToasts } from 'react-toast-notifications'
+
 
 function ProductDetails() {
+
+
+  const { addToast } = useToasts();
+
   window.scrollTo(0, 0);
   const { id } = useParams();
   const [showReviewMenu, setShowReviewMenu] = useState(true);
@@ -28,6 +37,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);
   // const [quantity, setQuantity] = useState(1);
 
+  
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -41,24 +51,49 @@ function ProductDetails() {
 
   }, []);
 
+
+
+
   const data = Array.from({ length: 8 }, () => ({ image: product.image }));
 
   const dispatch = useDispatch();
+
+
+  
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToScroll: 1,
+  };
+
+
+
+  const addToCart = () => {
+    dispatch(addToShoppingCart(product));
+    window.scrollTo(0, 0);
+    addToast('Product added to cart!', {
+      appearance: 'success',
+      autoDismiss: true,
+    })
+  }
+
+
 
   return (
     <>
       {
         loading ? (
-          <div class="w-full h-96 z-50 overflow-hidden flex flex-col items-center justify-center">
-            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-            <h2 class="text-center text-xl font-semibold">Loading...</h2>
+          <div className="w-full h-96 z-50 overflow-hidden flex flex-col items-center justify-center">
+            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+            <h2 className="text-center text-xl font-semibold">Loading...</h2>
           </div>
         ) : (
           <>
             <Reviewbar />
-            <div className="mb-20 mt-10 w-11/12 md:w-9/12 mx-auto flex flex-col space-y-10">
+            <div className="mb-20 md:mt-10 w-12/12 md:w-9/12 mx-auto flex flex-col space-y-10">
               <div className="w-12/12 flex flex-col md:flex-row md:space-x-10">
-                <div className="details__left w-11/12 mx-auto md:w-6/12">
+                <div className="details__left mx-auto w-6/12 hidden md:block">
                   <Carousel
                     data={data}
                     time={2000}
@@ -77,7 +112,14 @@ function ProductDetails() {
                     thumbnailWidth="100px"
                   />
                 </div>
-                <div className="details__right w-11/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
+                <div className="details__left block md:hidden">
+                <Slider {...settings}>
+                <div>
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                </div>
+            </Slider>
+                </div>
+                <div className="details__right w-10/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
                   <div className="hidden md:flex">
                     <Breadcrumb aria-label="Default breadcrumb example">
                       <Breadcrumb.Item icon={HiHome}>
@@ -89,13 +131,16 @@ function ProductDetails() {
                       <Breadcrumb.Item>{product.name}</Breadcrumb.Item>
                     </Breadcrumb>
                   </div>
-                  <p className="text-2xl font-bold">{product.name}</p>
                   <div className="flex space-x-6">
                     <div className="text-xs text-gray-600 flex space-x-2">
                       <span className="font-semibold">CATERGORY:</span>
                       <span>{product.category}</span>
                     </div>
                   </div>
+                  <p className="text-2xl font-bold">{product.name}</p>
+                  <p className="text-left text-gray-700 text-sm">
+                    {product.description}
+                  </p>
                   <p className="text-4xl font-bold text-[#D26E4B]">€{product.price}</p>
                   <div className="flex items-center space-x-4">
                     <div className="stars flex">
@@ -107,17 +152,14 @@ function ProductDetails() {
                     </div>
                     <span className="text-xs text-gray-500">(2 Reviews)</span>
                   </div>
-                  <p className="text-left text-gray-700 text-sm">
-                    {product.description}
-                  </p>
-                  <div className="flex space-x-4 items-center">
+                  {/* <div className="flex space-x-4 items-center">
                     <p className="text-base">Color:</p>
                     <div className="colors flex space-x-3">
                       <div className="black w-8 h-8 bg-main rounded border cursor-pointer transition-all duration-100 ease-linear hover:scale-110"></div>
                       <div className="black w-8 h-8 bg-[#56962E] rounded border cursor-pointer transition-all duration-100 ease-linear hover:scale-110"></div>
                       <div className="black w-8 h-8 bg-[#965000]  rounded border cursor-pointer transition-all duration-100 ease-linear hover:scale-110"></div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex space-x-4 items-center">
                     <p className="text-base">Size:</p>
                     <div className="sizes flex space-x-3">
@@ -137,13 +179,13 @@ function ProductDetails() {
                 </div> */}
                   </div>
                   <div className="h-px w-full bg-gray-100"></div>
-                  <div className="flex space-x-10">
+                  <div className="w-full flex items-center justify-center md:justify-start space-x-10">
                     {/* <div className="flex items-center border rounded-md">
                       <button onClick={()=> quantity > 1 ? setQuantity(quantity - 1) : setQuantity(1)} className="px-4 border-r">-</button>
                       <span className="px-6 font-bold">{quantity}</span>
                       <button onClick={()=> setQuantity(quantity + 1)} className="px-4 border-l">+</button>
                     </div> */}
-                    <button onClick={() => dispatch(addToShoppingCart(product))} className="flex items-center space-x-2 bg-main px-6 py-2 text-white rounded-md text-base cursor-pointer font-semibold">
+                    <button onClick={() => addToCart()} className="flex items-center justify-center w-full md:w-max space-x-2 bg-main px-6 py-2 text-white rounded-md text-base cursor-pointer font-semibold">
                       <HiOutlineShoppingBag />
                       <span>Add to cart</span>
                     </button>
@@ -380,11 +422,12 @@ function ProductDetails() {
           </Tabs.Group> */}
 
               <Divider />
+              <div className="w-10/12 md:w-full mx-auto md:mx-0">
               <h1 className="my-5 text-left font-semibold text-2xl">Reviews</h1>
               <div className="review flex flex-col md:flex-row space-y-20 md:space-y-0 md:space-x-8">
                 <div className="review__left md:w-4/12 flex flex-col items-start space-y-8">
                   <div className="flex space-x-4">
-                    <p className="text-main text-8xl font-extrabold">4.0</p>
+                    <p className="text-main text-7xl font-extrabold">4.0</p>
                     <div className="flex flex-col space-y-2 items-start">
                       <p className="font-semibold">Average Rating</p>
                       <div className="flex items-center space-x-4">
@@ -479,6 +522,7 @@ function ProductDetails() {
                     unlike={0}
                   />
                 </div>
+              </div>
               </div>
             </div>
             <ProductsList title="Related Products" />

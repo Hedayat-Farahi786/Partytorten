@@ -1,42 +1,27 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Categories() {
-  const categories = [
-    {
-      url: "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/10/category3.jpg",
-      text: "For Men",
-    },
-    {
-      url: "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/10/category4.jpg",
-      text: "Accessories",
-    },
-    {
-      url: "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/10/category1.jpg",
-      text: "For Women",
-    },
-    {
-      url: "https://d-themes.com/wordpress/riode/demo-1/wp-content/uploads/sites/5/2020/10/category2.jpg",
-      text: "Cosmetic",
-    },
-  ];
+
+
+
+    const categories = useSelector(state => state.products.categories);
+
 
   return (
-    <div className="my-10 w-11/12 md:w-9/12 mx-auto space-y-8">
-      <p className="font-semibold text-2xl">Our Categories</p>
-      <div className="categories flex flex-wrap justify-between">
+    <div className="mb-10 w-11/12 md:w-9/12 mx-auto">
+      <p className="font-semibold text-2xl mb-5">Categories</p>
+      <div className="categories flex flex-col md:flex-row items-center md:first-letter:flex-wrap md:justify-center md:space-x-10 w-full">
         {categories.map((cat, ind) => (
-          <Link to="/allProducts">
+          <Link to="/allProducts" className="w-10/12">
             <div
               key={ind}
-              style={{
-                background: `url(${cat.url}) no-repeat center center`,
-                backgroundSize: "cover",
-              }}
-              className="relative transition duration-150 ease-in-out cursor-pointer hover:scale-110 p-2 md:p-5 flex items-end justify-center mt-4 w-44 h-36 md:w-64 md:h-64 category overflow-hidden rounded-lg"
+              className="category relative border border-gray-200 transition duration-150 ease-in-out cursor-pointer hover:scale-110 flex flex-col items-end justify-between mt-4 w-full h-48 md:w-64 md:h-64 category overflow-hidden rounded-lg"
             >
-              <button className="transition duration-200 ease-in bg-white text-xs md:text-sm font-semibold rounded hover:bg-main hover:text-white cursor-pointer w-full p-1 md:p-2">
-                {cat.text}
+              <img src={cat.image} alt="category" className="h-[70%] object-cover w-full" />
+              <button className="h-[30%] transition duration-200 ease-in bg-white text-sm md:text-base font-semibold rounded hover:bg-main hover:text-white cursor-pointer w-full p-1 md:p-2">
+                {cat.name}
               </button>
             </div>
           </Link>

@@ -52,7 +52,7 @@ cart.forEach(item => {
   };
 
   return (
-    <div className={`topbar__top w-full bg-white ${stickyClass}`}>
+    <div className={`topbar__top z-50 w-full bg-white ${stickyClass}`}>
       <ShoppingCartSidebar />
       <Sidebar />
       <Filter />
@@ -99,7 +99,7 @@ cart.forEach(item => {
           >
             <HiOutlineShoppingBag size={35} />
             <div className="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-main rounded-full border-2 border-white dark:border-gray-900">
-              0
+            {cart.length}
             </div>
           </div>
         </div>
