@@ -25,7 +25,7 @@ function Product({ name, description, image, category, price, id }) {
   }, []);
 
   return (
-    <div className="product w-44 md:w-64 group space-y-2 my-10 md:mb-10 rounded overflow-hidden">
+    <div className="product w-44 md:w-64 group space-y-2 md:mb-10 rounded overflow-hidden">
       <div className="product__top relative">
         <img
           src={image}

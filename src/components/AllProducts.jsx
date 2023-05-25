@@ -198,8 +198,8 @@ const AllProducts = () => {
                         <li onClick={() => handleItemClick('item1')} className='w-full text-left mb-3 px-2 py-1 cursor-pointer font-medium'>Sweets</li> */}
                                     </ul>
                                 </div>
-                                <div className="products__right w-full md:w-9/12">
-                                    <div className="products flex items-center justify-center md:justify-start flex-wrap w-full">
+                                <div className="products__right w-full mx-auto px-2 md:w-9/12">
+                                    <div className="products space-x-3 flex flex-wrap items-center justify-center md:justify-start w-full">
                                         {
                                             products.map((product) => (
                                                 <div className='mb-8'>
