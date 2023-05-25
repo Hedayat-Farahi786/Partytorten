@@ -34,7 +34,7 @@ function ProductsList({ title }) {
   const NextArrow = ({ onClick }) => (
     <button className="slick-arrow slick-next" onClick={onClick}>
       {/* Add your custom next arrow icon or content */}
-      Next
+      Nextsdf
     </button>
   );
 
@@ -43,30 +43,27 @@ function ProductsList({ title }) {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true
+          slidesToShow: 4,
+          slidesToScroll: 1,
         }
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
+          slidesToShow: 3,
+          slidesToScroll: 1,
         }
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1
         }
       }
@@ -84,9 +81,9 @@ function ProductsList({ title }) {
 <p className="font-semibold text-2xl mb-5">{title}</p>
 
       <Slider {...settings}>
-        {products.map((product, id) => {
-          return <Product name={product.name} description={product.description} image={product.image} category={product.category} price={product.price} id={product._id} key={product._id} />
-        })}
+        {products.map((product, id) => (
+          <Product name={product.name} description={product.description} image={product.image} category={product.category} price={product.price} id={product._id} key={product._id} />
+        ))}
       </Slider>
     </div>
   );

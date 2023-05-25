@@ -1,7 +1,7 @@
 import React from "react";
 import { BsTruck } from "react-icons/bs";
 import { MdSupportAgent } from "react-icons/md";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { RiSecurePaymentLine, RiServiceLine } from "react-icons/ri";
 import "./Services.css";
 
 function Services() {
@@ -20,7 +20,7 @@ function Services() {
       </div>
       <div className="h-px w-full md:h-12 md:w-px bg-gray-300"></div>
       <div className="service flex flex-col md:flex-row items-center space-x-4">
-        <MdSupportAgent size={40} />
+        <RiServiceLine size={40} />
         <div className="flex flex-col items-center md:items-start">
           <p className="font-semibold text-xs md:text-sm">
             Customer Support 24/7

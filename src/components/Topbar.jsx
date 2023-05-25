@@ -85,7 +85,7 @@ function Topbar() {
   };
 
   return (
-    <div className={`topbar__top z-50 w-full bg-white ${stickyClass}`}>
+    <div className={`topbar__top w-full bg-white ${stickyClass}`}>
       <ShoppingCartSidebar />
       <Sidebar />
       <Filter />
