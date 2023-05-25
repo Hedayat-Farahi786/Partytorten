@@ -30,7 +30,7 @@ function Product({ name, description, image, category, price, id }) {
         <img
           src={image}
           alt="product"
-          className="h-40 md:h-60 w-full object-cover"
+          className="h-48 md:h-60 w-full object-cover"
         />
         <button className="absolute top-2 right-2 hover:bg-main hover:text-white transition-all duration-200 ease-linear hidden group-hover:block cursor-pointer bg-white rounded-full p-2">
           <AiOutlineHeart />
