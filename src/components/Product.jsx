@@ -46,11 +46,11 @@ function Product({ name, description, image, category, price, id }) {
           {categoryName}
         </p>
         <Link to={`/products/${id}`}>
-          <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-xs xl:text-sm">
+          <p className="hover:text-main cursor-pointer transition-all duration-200 ease-in-out truncate text-sm xl:text-base">
             {name}
           </p>
         </Link>
-        <p className="font-bold text-xs xl:text-sm">€{price}</p>
+        <p className="font-bold text-sm xl:text-base">€{price}</p>
         <div className="flex flex-col xl:flex-row space-y-2 xl:space-y-0 items-center justify-center space-x-0 xl:space-x-4">
           <div className="stars flex">
             <AiFillStar style={{ color: "#D26E4B" }} />
