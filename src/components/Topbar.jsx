@@ -32,9 +32,35 @@ import {
 } from "../features/userAccount/userAccount";
 
 function Topbar() {
-  const [stickyClass, setStickyClass] = useState("relative");
-
+  const products = useSelector((state) => state.products.products);
   const cart = useSelector((state) => state.shoppingCart.cart);
+
+  const [stickyClass, setStickyClass] = useState("relative");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  // Function to handle search term change
+  const handleSearchTermChange = (e) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+
+    if (newSearchTerm.trim() === "") {
+      setShowResults(false);
+      setSearchResults([]); // Clear search results if input is empty
+    } else {
+      // Perform search operation here, e.g., fetch data from an API
+      // and update searchResults state with the matching products
+      // For demonstration purposes, I'll use a simple array of products
+
+      const filteredResults = products.filter((product) =>
+        product.name.toLowerCase().includes(newSearchTerm.toLowerCase())
+      );
+
+      setShowResults(true);
+      setSearchResults(filteredResults);
+    }
+  };
 
   let total = 0;
   cart.forEach((item) => {
@@ -105,15 +131,71 @@ function Topbar() {
             {/* <Badge color="gray">{packageJson.version}</Badge> */}
           </div>
         </div>
-        <div className="hidden md:flex search w-5/12 h-12 relative rounded-md overflow-hidden border-black border">
+        <div className="hidden md:flex search w-5/12 h-12 relative rounded-md overflow border-black border">
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearchTermChange}
             className="w-full h-full rounded-md border-0 text-sm px-4"
             placeholder="Search..."
           />
           <span className="absolute text-gray-900 right-4 top-1/2 transform -translate-y-1/2">
             <AiOutlineSearch size={20} />
           </span>
+
+          {searchResults.length > 0 && showResults && (
+            <div className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] absolute bg-white w-full top-12 rounded-md p-3 z-20">
+              <ul className="w-full flex flex-col items-start space-y-4 overflow-clip">
+                <div className="text-right w-full">
+                  <p className="text-[10px]">
+                    Found <strong>{searchResults.length}</strong> results
+                  </p>
+                </div>
+                {searchResults.map((product, index) => (
+                  <div className="w-full">
+                    <Link
+                      onClick={() => {
+                        setShowResults(false);
+                        setSearchTerm("");
+                      }}
+                      to={`/products/${product._id}`}
+                      className="cursor-pointer"
+                    >
+                      <li
+                        key={product._id}
+                        class={`w-full pb-2 ${
+                          index !== searchResults.length - 1
+                            ? "border-b border-gray-300"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <img
+                            src={product.image}
+                            className="w-14 h-14 object-cover rounded"
+                            alt={product.name}
+                          />
+                          <div className="w-full flex flex-col items-start">
+                            <p className="text-[10px] text-gray-500">
+                              {product.category}
+                            </p>
+                            <p className="text-base font-semibold">
+                              {product.name}
+                            </p>
+                            <div className="w-10/12 text-left text-gray-600">
+                              <p className="w-full text-xs truncate text-ellipsis">
+                                €{product.description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </Link>
+                  </div>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="flex xl:hidden space-x-5">
@@ -150,6 +232,11 @@ function Topbar() {
               {/* <Dropdown.Item>Dashboard</Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
               <Dropdown.Divider /> */}
+              <Dropdown.Item>
+                <Link to='/orders'>
+                My Orders
+                </Link>
+              </Dropdown.Item>
               <Dropdown.Item onClick={() => dispatch(logoutUser())}>
                 Sign out
               </Dropdown.Item>
@@ -185,12 +272,12 @@ function Topbar() {
             </div>
           </div>
           <div className="w-px h-12 bg-gray-300"></div> */}
-          <div className="actions__item cursor-pointer transition-all duration-150 ease-linear hover:text-main">
+          {/* <div className="actions__item cursor-pointer transition-all duration-150 ease-linear hover:text-main">
             <Link to="/wishlist">
               <AiOutlineHeart size={40} />
             </Link>
           </div>
-          <div className="w-px h-12 bg-gray-300"></div>
+          <div className="w-px h-12 bg-gray-300"></div> */}
           <div
             onClick={() => dispatch(toggleShoppingCartSidebar())}
             className="actions__item flex items-center space-x-2 transition-all duration-150 ease-linear hover:text-main cursor-pointer"

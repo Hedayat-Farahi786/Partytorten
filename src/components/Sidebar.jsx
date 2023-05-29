@@ -1,6 +1,15 @@
 import React from "react";
-import { AiFillHome, AiFillInfoCircle, AiOutlineClose } from "react-icons/ai";
+import {
+  AiFillHome,
+  AiFillInfoCircle,
+  AiOutlineClose,
+  AiOutlineHome,
+  AiOutlineInfoCircle,
+  AiOutlinePoweroff,
+  AiOutlineUnorderedList,
+} from "react-icons/ai";
 import { HiShoppingBag, HiTable, HiUser } from "react-icons/hi";
+import { BiCategory, BiShoppingBag, BiUser } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/sideMenu/sideMenu";
 import { Sidebar as SideBar } from "flowbite-react";
@@ -10,14 +19,42 @@ import {
   toggleShowUserAccount,
 } from "../features/userAccount/userAccount";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { useState } from "react";
 
 function Sidebar() {
   const showSidebar = useSelector((state) => state.sideMenu.showSidebar);
   const loggedIn = useSelector((state) => state.userAccount.loggedIn);
 
   const categories = useSelector((state) => state.products.categories);
+  const products = useSelector((state) => state.products.products);
 
   const dispatch = useDispatch();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  // Function to handle search term change
+  const handleSearchTermChange = (e) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+
+    if (newSearchTerm.trim() === "") {
+      setShowResults(false);
+      setSearchResults([]); // Clear search results if input is empty
+    } else {
+      // Perform search operation here, e.g., fetch data from an API
+      // and update searchResults state with the matching products
+      // For demonstration purposes, I'll use a simple array of products
+
+      const filteredResults = products.filter((product) =>
+        product.name.toLowerCase().includes(newSearchTerm.toLowerCase())
+      );
+
+      setShowResults(true);
+      setSearchResults(filteredResults);
+    }
+  };
 
   return (
     <>
@@ -48,6 +85,8 @@ function Sidebar() {
                   id="default-search"
                   className="block text-xs w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search..."
+                  value={searchTerm}
+                  onChange={handleSearchTermChange}
                   required
                 />
                 <button
@@ -59,17 +98,74 @@ function Sidebar() {
               </div>
             </form>
 
+            <div className="w-full bg-red-500 relative">
+              {searchResults.length > 0 && showResults && (
+                <div className="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] absolute bg-white w-full top-0 rounded-md p-3 z-20">
+                  <ul className="w-full flex flex-col items-start space-y-4 overflow-clip">
+                    <div className="text-right w-full">
+                      <p className="text-[10px]">
+                        Found <strong>{searchResults.length}</strong> results
+                      </p>
+                    </div>
+                    {searchResults.map((product, index) => (
+                      <div className="w-full">
+                        <Link
+                          onClick={() => {
+                            setShowResults(false);
+                            dispatch(toggleSidebar());
+                            setSearchTerm("");
+                          }}
+                          to={`/products/${product._id}`}
+                          className="cursor-pointer"
+                        >
+                          <li
+                            key={product._id}
+                            class={`w-full pb-2 ${
+                              index !== searchResults.length - 1
+                                ? "border-b border-gray-300"
+                                : ""
+                            }`}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <img
+                                src={product.image}
+                                className="w-12 h-12 object-cover rounded"
+                                alt={product.name}
+                              />
+                              <div className="w-full flex flex-col items-start">
+                                <p className="text-[8px] text-gray-500">
+                                  {product.category}
+                                </p>
+                                <p className="text-sm font-semibold">
+                                  {product.name}
+                                </p>
+                                <div className="w-10/12 text-left text-gray-600">
+                                  <p className="w-full text-[10px] truncate text-ellipsis">
+                                    €{product.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </Link>
+                      </div>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
             <div className="sidemenu__items flex flex-col items-start my-8">
               <SideBar className="p-0">
                 <SideBar.Items>
                   <SideBar.ItemGroup className="text-left text-sm">
                     <SideBar.Item
                       onClick={() => dispatch(toggleSidebar())}
-                      icon={AiFillHome}
+                      icon={AiOutlineHome}
                     >
                       <Link to="/">Home</Link>
                     </SideBar.Item>
-                    <SideBar.Collapse icon={HiTable} label="Categories">
+                    <SideBar.Collapse icon={BiCategory} label="Categories">
                       {categories.map((category) => (
                         <SideBar.Item
                           key={category._id}
@@ -81,13 +177,21 @@ function Sidebar() {
                     </SideBar.Collapse>
                     <SideBar.Item
                       onClick={() => dispatch(toggleSidebar())}
-                      icon={HiShoppingBag}
+                      icon={BiShoppingBag}
                     >
                       <Link to="/allProducts">Products</Link>
                     </SideBar.Item>
+                    {loggedIn && (
+                      <SideBar.Item
+                        onClick={() => dispatch(toggleSidebar())}
+                        icon={AiOutlineUnorderedList}
+                      >
+                      <Link to="/orders">My Orders</Link>
+                      </SideBar.Item>
+                    )}
                     <SideBar.Item
                       onClick={() => dispatch(toggleSidebar())}
-                      icon={AiFillInfoCircle}
+                      icon={AiOutlineInfoCircle}
                     >
                       About Us
                     </SideBar.Item>
@@ -97,7 +201,7 @@ function Sidebar() {
                           dispatch(toggleSidebar());
                           dispatch(logoutUser());
                         }}
-                        icon={RiLogoutCircleLine}
+                        icon={AiOutlinePoweroff}
                       >
                         Logout
                       </SideBar.Item>
@@ -107,7 +211,7 @@ function Sidebar() {
                           dispatch(toggleSidebar());
                           dispatch(toggleShowUserAccount());
                         }}
-                        icon={HiUser}
+                        icon={BiUser}
                       >
                         Sign In
                       </SideBar.Item>

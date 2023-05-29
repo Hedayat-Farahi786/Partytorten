@@ -6,6 +6,8 @@ import Divider from "./Divider";
 import creditCartImg from "../assets/images/credit_payment.png";
 import paypalImg from "../assets/images/paypal_payment.png";
 import paypalIcon from "../assets/images/paypal_icon.png";
+import cashIcon from "../assets/images/cash_icon.png";
+import payCashIcon from "../assets/images/Frame 1(1).png";
 
 import {
   Tab,
@@ -18,6 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from "../features/shoppingCart/shoppingCart";
+import { BsCashCoin } from "react-icons/bs";
+import { toast } from "react-hot-toast";
 
 
 
@@ -30,6 +34,7 @@ function Checkout() {
 
 
 
+  const [errorMessage, setErrorMessage] = useState("");
   const [street, setStreet] = useState("");
   const [houseNumber, setHouseNumber] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -49,27 +54,49 @@ function Checkout() {
   });
 
 
+  const callError = (field) => {
+    window.scrollTo(0, 0);
+    setErrorMessage(`${field} is required!`);
+    toast.error("Please enter the required fields!");
+  }
+
+
   const placeOrder = () => {
 
-    const products = cart.map(item => {
-      return {
-        product: item.product._id,
-        quantity: item.quantity,
-        price: Number((item.product.price * item.quantity).toFixed(2))
+
+    if(street === ""){
+     callError("Street")
+    } else if(houseNumber === ""){
+      callError("House Number")
+    } else if(postalCode === ""){
+      callError("Postal Code")
+    } else if(phone === ""){
+      callError("Phone")
+    } else {
+      setErrorMessage("");
+
+      const products = cart.map(item => {
+        return {
+          product: item.product._id,
+          quantity: item.quantity,
+          price: Number((item.product.price * item.quantity).toFixed(2))
+        }
+      });
+  
+  
+      let res = {
+        user: user.userId,
+        products,
+        address: street + " " + houseNumber + ", " + postalCode + " Munich, Germany",
+        phone,
+        email: user.email,
+        otherNotes,
+        trackingNumber: "12345"
       }
-    });
-
-
-    let res = {
-      user: user.userId,
-      products,
-      address: street + " " + houseNumber + ", " + postalCode + " Munich, Germany",
-      phone,
-      email: user.email,
-      trackingNumber: "12345"
+  
+      submitOrder(res);
     }
 
-    submitOrder(res);
   }
 
   const submitOrder = (orderData) => {
@@ -90,7 +117,7 @@ function Checkout() {
 
   useEffect(() => {
 
-    if(!loggedIn){
+    if(!loggedIn || cart.length === 0){
       navigate('/shoppingCart');
     }
     
@@ -113,8 +140,11 @@ function Checkout() {
       <div className="checkout w-11/12 md:w-10/12 space-y-20 md:space-y-0 md:space-x-6 flex flex-col md:flex-row mx-auto">
         <div className="checkout__left w-full md:w-7/12 flex flex-col items-start space-y-10">
           <form className="w-full">
-            <p className="text-left font-bold uppercase mb-12 text-2xl">
+            <p className="text-left font-bold uppercase mb-6 text-2xl">
               Your Address
+            </p>
+            <p className="text-left font-semibold uppercase mb-6 text-red-600 text-sm">
+              {errorMessage}
             </p>
             {/* <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="mb-6 md:w-6/12 flex flex-col items-start">
@@ -149,40 +179,7 @@ function Checkout() {
               </div>
             </div> */}
            
-            {/* <div className="flex flex-col md:flex-row md:space-x-4">
-              <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                <label
-                  for="billCountry"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Country <span className="text-[#ca2626]">*</span>
-                </label>
-                <select
-                  id="billCountry"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>France</option>
-                  <option>Germany</option>
-                </select>
-              </div>
-              <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                <label
-                  for="billCity"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  City <span className="text-[#ca2626]">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="billCity"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="City..."
-                  required
-                />
-              </div>
-            </div> */}
+           
             <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="mb-6 md:w-6/12 flex flex-col items-start">
                 <label
@@ -274,177 +271,39 @@ function Checkout() {
                 />
               </div>
             </div>
-            {/* <div className="flex items-start my-6">
-              <div className="flex items-center h-5">
-                <input
-                  id="remember"
-                  type="checkbox"
-                  className="w-4 h-4 cursor-pointer bg-black-50 text-black rounded border border-gray-300 focus:ring-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:focus:black dark:ring-offset-gray-800"
-                  onChange={(e) => setSameAddress(e.target.checked)}
-                />
+
+             <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="mb-6 md:w-6/12 flex flex-col items-start">
+                <label
+                  for="billCountry"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Country <span className="text-[#ca2626]">*</span>
+                </label>
+                <select
+                  id="billCountry"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="Germany" selected>Germany</option>
+                </select>
               </div>
-              <label
-                for="remember"
-                className="ml-2 text-sm font-semibold text-gray-900 dark:text-gray-300"
-              >
-                Ship to a differrent address?
-              </label>
-            </div> */}
-            {/* {sameAddress && (
-              <div className="w-full">
-                <p className="text-left font-bold uppercase my-12 text-2xl">
-                  Shipping Address
-                </p>
-                <div className="flex flex-col md:flex-row md:space-x-4">
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipFirstName"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      First Name <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="shipFirstName"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="First name..."
-                      required
-                    />
-                  </div>
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipLastName"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Last Name <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="shipLastName"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Last name..."
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row md:space-x-4">
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipEmail"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Email <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="shipEmail"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Email..."
-                      required
-                    />
-                  </div>
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipPhone"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Phone <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="shipPhone"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="+0123456789"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row md:space-x-4">
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipCountry"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Country <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <select
-                      id="shipCountry"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>France</option>
-                      <option>Germany</option>
-                    </select>
-                  </div>
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipCity"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      City <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="shipCity"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="City..."
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row md:space-x-4">
-                  <div className="mb-6 md:w-6/12 flex flex-col items-start">
-                    <label
-                      for="shipStreet"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Street <span className="text-[#ca2626]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="shipStreet"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Street Name..."
-                      required
-                    />
-                  </div>
-                  <div className="flex md:w-6/12 space-x-4">
-                    <div className="mb-6 w-6/12 flex flex-col items-start">
-                      <label
-                        for="shipHouseNumber"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        House Number <span className="text-[#ca2626]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="shipHouseNumber"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="House number..."
-                        required
-                      />
-                    </div>
-                    <div className="mb-6 w-6/12 flex flex-col items-start">
-                      <label
-                        for="shipPostalCode"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Postal Code <span className="text-[#ca2626]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="shipPostalCode"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Postal code..."
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="mb-6 md:w-6/12 flex flex-col items-start">
+                <label
+                  for="billCity"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  City <span className="text-[#ca2626]">*</span>
+                </label>
+                <select
+                  id="billCity"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="München" selected>München</option>
+                </select>
               </div>
-            )} */}
-            <div className="mt-12 md:mb-6 flex flex-col items-start">
+            </div>
+            
+            <div className="md:mb-6 flex flex-col items-start">
               <label
                 for="otherNotes"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -588,9 +447,10 @@ function Checkout() {
                     <img width={100} src={creditCartImg} alt="" />
                   </div>
                 </Tab>
-                <Tab key={1} value="paypal">
-                  <div className="flex flex-col items-center justify-center">
-                    <img width={70} src={paypalImg} alt="" />
+                <Tab key={1} value="cash">
+                  <div className="flex h-full items-center justify-center">
+                    {/* <img width={70} src={paypalImg} alt="" /> */}
+                    <img src={payCashIcon} width={120} alt="" />
                   </div>
                 </Tab>
               </TabsHeader>
@@ -683,19 +543,21 @@ function Checkout() {
                       <button
                         type="submit"
                         onClick={()=> placeOrder()}
-                        className="bg-black text-white uppercase font-semibold w-full py-2 rounded"
+                        disabled={true}
+                        className="bg-black disabled:cursor-not-allowed disabled:opacity-50 text-white uppercase font-semibold w-full py-2 rounded"
                       >
                         Place Order
                       </button>
                     {/* </Link> */}
                   </form>
                 </TabPanel>
-                <TabPanel key={1} value="paypal">
+                <TabPanel key={1} value="cash">
                   <div className="py-10">
                     {/* <Link to="/orderSummary"> */}
-                      <div onClick={()=> placeOrder()} className="flex items-center justify-center space-x-2 bg-[#F7CA3E] hover:bg-[#f7c93ee7] transition-all duration-150 ease-linear font-semibold py-2 rounded-md cursor-pointer shadow">
-                        <img width={24} src={paypalIcon} alt="" />
-                        <span>Pay with payal (€ {total.toFixed(2)})</span>
+                      <div onClick={()=> placeOrder()} className="text-white text-sm flex items-center justify-center space-x-3 bg-black transition-all duration-150 ease-linear font-semibold py-2 rounded-md cursor-pointer shadow">
+                        <img width={24} src={cashIcon} alt="" className="filter brightness-0 invert" />
+                        {/* <BsCashCoin size={24} /> */}
+                        <span>Pay on delivery (€ {total.toFixed(2)})</span>
                       </div>
                     {/* </Link> */}
                   </div>

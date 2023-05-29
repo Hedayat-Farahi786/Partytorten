@@ -23,7 +23,6 @@ function Main() {
 
     axios.get('https://partytorten-backend.vercel.app/category').then(response => {
       dispatch(addCategories(response.data));
-      console.log(response.data)
     }).catch(error => {
       console.error('Error fetching products:', error);
     });

@@ -26,7 +26,7 @@ function ShoppingCart() {
   const dispatch = useDispatch();
 
   const goToCheckout = () => {
-    if (loggedIn) {
+    if (loggedIn && cart.length > 0) {
       navigate("/checkout");
     } else {
       dispatch(toggleShowUserAccount());
@@ -185,7 +185,8 @@ function ShoppingCart() {
           <div className="w-full flex flex-col items-center justify-center space-y-5">
             <button
               onClick={() => goToCheckout()}
-              className="w-full rounded uppercase text-white bg-black py-4 font-bold"
+              disabled={cart.length === 0}
+              className="disabled:cursor-not-allowed disabled:opacity-50 w-full rounded uppercase text-white bg-black py-4 font-bold"
             >
               Procced to checkout
             </button>

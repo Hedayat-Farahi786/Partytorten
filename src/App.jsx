@@ -9,6 +9,7 @@ import Wishlist from "./components/Wishlist";
 import ShoppingCart from "./components/ShoppingCart";
 import Checkout from "./components/Checkout";
 import OrderSummary from "./components/OrderSummary";
+import Orders from "./components/Orders";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orderSummary/:id" element={<OrderSummary />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/allProducts" element={<AllProducts />} />
           <Route path="/products/:id" element={<ProductDetails />} />
         </Routes>

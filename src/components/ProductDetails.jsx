@@ -58,7 +58,7 @@ function ProductDetails() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log("Error getting the product");
+        toast.error("Error getting the product!");
       });
   }, []);
 
@@ -108,7 +108,7 @@ function ProductDetails() {
                   // pauseIconSize="40px"
                   slideBackgroundColor="#f2f3f5"
                   slideImageFit="contain"
-                  thumbnails={true}
+                  thumbnails={false}
                   thumbnailWidth="100px"
                 />
               </div>
@@ -123,7 +123,7 @@ function ProductDetails() {
                   </div>
                 </Slider>
               </div>
-              <div className="details__right w-10/12 mx-auto md:w-7/12 flex flex-col items-start space-y-6">
+              <div className="details__right w-10/12 mx-auto md:w-7/12 flex flex-col items-start space-y-5">
                 <div className="hidden md:flex">
                   <Breadcrumb aria-label="Default breadcrumb example">
                     <Breadcrumb.Item icon={HiHome}>

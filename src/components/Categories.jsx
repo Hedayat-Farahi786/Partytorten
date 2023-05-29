@@ -14,9 +14,8 @@ function Categories() {
       <p className="font-semibold text-2xl mb-5">Categories</p>
       <div className="categories flex flex-col md:flex-row items-center md:first-letter:flex-wrap md:justify-center md:space-x-10 w-full">
         {categories.map((cat, ind) => (
-          <Link to="/allProducts" className="w-10/12">
+          <Link key={ind} to="/allProducts" className="w-10/12">
             <div
-              key={ind}
               className="category relative border border-gray-200 transition duration-150 ease-in-out cursor-pointer hover:scale-110 flex flex-col items-end justify-between mt-4 w-full h-48 md:w-64 md:h-64 category overflow-hidden rounded-lg"
             >
               <img src={cat.image} alt="category" className="h-[70%] object-cover w-full" />

@@ -13,7 +13,7 @@ function Banner() {
         <span>Extra</span>{" "}
         <span className="bg-[#222222] text-main px-4 py-2 flex items-center space-x-3">
           <AiOutlineStar className="animate-[spin_3s_linear_infinite]" />
-          <span>€30 off</span>
+          <span>Discount</span>
           <AiOutlineStar className="animate-[spin_3s_linear_infinite]" />
         </span>
         <span>online</span>

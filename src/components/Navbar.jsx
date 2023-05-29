@@ -19,7 +19,7 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 
 function Navbar() {
   const categories = useSelector((state) => state.products.categories);
-
+  const loggedIn = useSelector((state) => state.userAccount.loggedIn);
 
   return (
     <div className="w-full bg-white">
@@ -38,8 +38,8 @@ function Navbar() {
               label="Categories"
               inline={true}
             >
-              {categories.map((category) => (
-                <Dropdown.Item>
+              {categories.map((category, index) => (
+                <Dropdown.Item key={index}>
                   <Link to="/allProducts">{category.name}</Link>
                 </Dropdown.Item>
               ))}
@@ -49,6 +49,13 @@ function Navbar() {
                 All Products
               </p>
             </Link>
+            {loggedIn && (
+              <Link to="/orders">
+                <p className="menu__item hover:text-main cursor-pointer">
+                  My Orders
+                </p>
+              </Link>
+            )}
             <Link to="/aboutus">
               <p className="menu__item hover:text-main cursor-pointer">
                 About Us
@@ -60,8 +67,6 @@ function Navbar() {
             <MdOutlineLocalOffer size={20} />
             <p>Special Offers</p>
           </div>
-
-
         </div>
       </div>
     </div>

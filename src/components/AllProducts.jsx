@@ -203,7 +203,7 @@ const AllProducts = () => {
                                         {
                                             products.map((product) => (
                                                 <div className='mb-8'>
-                                                    <Product name={product.name} description={product.description} image={product.image} category={getCategoryName(product.category)} price={product.price} id={product._id} key={product._id} />
+                                                    <Product product={product} key={product._id} />
                                                 </div>
                                             ))
                                         }
@@ -297,8 +297,8 @@ const AllProducts = () => {
                                 <div className="products flex items-center justify-center md:justify-start flex-wrap w-full">
                                     {
                                         products.map((product) => (
-                                            <div className='mb-8'>
-                                                <Product name={product.name} description={product.description} image={product.image} category={getCategoryName(product.category)} price={product.price} id={product._id} key={product._id} />
+                                            <div className='mb-8 mr-10'>
+                                                <Product product={product} key={product._id} />
                                             </div>
                                         ))
                                     }
